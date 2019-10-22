@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Auto Release Sh*t",
+  "description": "自动生成发版申请",
+  "version": "1.0.0",
+  "permissions": [
+    "history"
+  ],
+  "browser_action": {
+    "default_icon": "imgs/favicon.png",
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "css": [
+        "index.css"
+      ],
+      "js": [
+        "index.js"
+      ]
+    }
+  ]
+}
