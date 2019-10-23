@@ -4,9 +4,8 @@
   "description": "自动生成发版申请",
   "version": "1.0.0",
   "permissions": [
-    "history",
-    "webNavigation",
     "tabs",
+    "webRequest",
     "*://jenkins.codemao.cn/*"
   ],
   "page_action": {
@@ -32,6 +31,9 @@
     }
   ],
   "externally_connectable": {
+    "ids": [
+      "*"
+    ],
     "matches": [
       "*://jenkins.codemao.cn/*"
     ]
@@ -42,7 +44,6 @@
   "background": {
     "scripts": [
       "/subs/background.js"
-    ],
-    "persistent": false
+    ]
   }
 }
