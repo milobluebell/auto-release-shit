@@ -26,12 +26,19 @@
         "index.css"
       ],
       "js": [
-        "index.js"
+        "/subs/content.js"
       ],
       "run_at": "document_idle"
     }
   ],
-  "omnibox": { "keyword" : "rea" },
+  "externally_connectable": {
+    "matches": [
+      "*://jenkins.codemao.cn/*"
+    ]
+  },
+  "omnibox": {
+    "keyword": "rea"
+  },
   "background": {
     "scripts": [
       "/subs/background.js"

@@ -69,3 +69,4 @@ class Vendors {
 
 
 console.log(window.location.href, Vendors.getStage(window.location.href) === 'staging');
+console.log(chrome.runtime);

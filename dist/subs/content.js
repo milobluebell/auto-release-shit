@@ -1,7 +1,9 @@
 (function () {
   getLastestSuccessReleaseCode();
-})()
-
+})();
+chrome.runtime.onMessage.addListener(function (e) {
+  console.log(e, 1);
+})
 
 /**
  * @function 获取最近一次成功构建的编号
@@ -26,6 +28,6 @@ function getLastestSuccessReleaseCode() {
 /**
  * 
  */
-function getReleaseCommits(release_code){
-  
+function getReleaseCommits(release_code) {
+
 }
