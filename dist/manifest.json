@@ -6,6 +6,7 @@
   "permissions": [
     "tabs",
     "webRequest",
+    "storage",
     "*://jenkins.codemao.cn/*"
   ],
   "page_action": {
@@ -16,13 +17,14 @@
     "default_title": "release your sh*t elegantly",
     "default_popup": "index.html"
   },
+  "options_page": "option.html",
   "content_scripts": [
     {
       "matches": [
         "*://jenkins.codemao.cn/*"
       ],
       "css": [
-        "index.css"
+        "/subs/content.css"
       ],
       "js": [
         "/subs/content.js"

@@ -29,10 +29,10 @@ function getReleaseCommits(release_code) {
   const tnow = new Date().getTime();
   const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`;
   const targetDiv = document.getElementById('main-panel');
-  let count = 1;
+  let range = 1;
   const timer = setInterval(() => {
-    count++;
-    if (count >= 20) {
+    range++;
+    if (range >= 20) {
       clearInterval(timer)
     } else {
       chrome.runtime.sendMessage(requestUrl, function (res) {
@@ -51,3 +51,8 @@ function getReleaseCommits(release_code) {
     }
   }, 500);
 }
+
+
+/**
+ * 
+ */
