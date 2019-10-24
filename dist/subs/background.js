@@ -150,7 +150,6 @@ let commitsData = {};
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log(request);
   sendResponse({ status: true, body: commitsData });
-
   if (!requestting) {
     fetch(request, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
       commitsData = {

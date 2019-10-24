@@ -3,19 +3,20 @@
 document.getElementById('submitBtn').onclick = function () {
   const developers = document.getElementById('developers').value;
   const testers = document.getElementById('testers').value;
-
-  chrome.extension.sendMessage({
+  chrome.storage.sync.set({
     developers,
-    testers
-  }, function (res) {
-    console.log(res);
-  })
-
-  // console.log(chrome.storage);
-  // chrome.storage.StorageArea.set({
-  //   developers: '1',
-  //   tester: '2'
-  // }, function (res) {
-  //   console.log(res);
-  // })
+    testers,
+  });
 }
+
+
+chrome.storage.sync.get({
+  developers,
+  testers,
+}, function (res) {
+  const { developers, testers } = res;
+  if (res.developers && res.testers && typeof res.developers === 'string' && typeof res.developers === 'string') {
+    document.getElementById('developers').value = developers;
+    document.getElementById('testers').value = testers;
+  }
+});
