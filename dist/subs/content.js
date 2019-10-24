@@ -1,4 +1,10 @@
 (function () {
+  // chrome.storage.sync.get([
+  //   'developers',
+  //   'testers'
+  // ], function (res) {
+  //   console.log(res);
+  // });
   getReleaseCommits(getLastestSuccessReleaseCode());
 })();
 
@@ -49,10 +55,5 @@ function getReleaseCommits(release_code) {
         }
       });
     }
-  }, 500);
+  }, 300);
 }
-
-
-/**
- * 
- */

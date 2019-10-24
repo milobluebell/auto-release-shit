@@ -9,7 +9,6 @@ document.getElementById('submitBtn').onclick = function () {
   });
 }
 
-
 chrome.storage.sync.get({
   developers,
   testers,

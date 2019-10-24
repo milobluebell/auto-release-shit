@@ -101,7 +101,7 @@ class Vendors {
    *        [perf判定为"优化表现和性能"]
    *        [其余根据实际情况进行拼接]
    */
-  static generateOnePieceOfShit = (commits) => {
+  static generateOnePieceOfShit = (commits, developers, testers) => {
     const commitList = commits.reduce((prev, curr) => {
       const commitKey = curr.message.split(':')[0];
       if (commitKey === Constants.commitMessageTags.feat.label) {
@@ -113,8 +113,8 @@ class Vendors {
     }, []);
     // 
     const desc = Array.from(new Set(commitList), commit => commit).join('、');
-    return Constants.sheetFrags.reduce(pre, cur=> {
-      return pre.push(`${cur}： `);
+    return Constants.sheetFrags.reduce((pre, cur) => {
+      return pre.concat([`${cur}：`]);
     }, []);
 
     // return `项目组：平台服务组\r
@@ -145,22 +145,27 @@ class Vendors {
   }
 };
 
+
+
+
 let requestting = false;
 let commitsData = {};
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(request);
   sendResponse({ status: true, body: commitsData });
   if (!requestting) {
     fetch(request, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
-      commitsData = {
-        commitCount: data[0].commitCount,
-        commits: data[0].commits,
-        theShit: Vendors.generateOnePieceOfShit(data[0].commits),
-      }
-      requestting = false;
+      chrome.storage.sync.get([
+        'developers',
+        'testers'
+      ], function (res) {
+        commitsData = {
+          commitCount: data[0].commitCount,
+          commits: data[0].commits,
+          theShit: Vendors.generateOnePieceOfShit(data[0].commits, res.developers, res.testers),
+        }
+        requestting = false;
+      });
     });
   }
   requestting = true;
 });
-
-console.log(chrome.storage);
