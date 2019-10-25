@@ -69,7 +69,7 @@ function insertElemNodes(shit) {
     shit.forEach(item => {
       impressionHtmlTemplate += `<tr class="shit-job">
         <td class="key stage-cell">${item.key}：</td>
-        <td class="value stage-cell"> ${item.value}</td>
+        <td class="value stage-cell"> ${item.value === 'staging' ? 'production' : item.value}</td>
       </tr>`;
     });
     impressionHtml.innerHTML = impressionHtmlTemplate + '</tbody></table>';
