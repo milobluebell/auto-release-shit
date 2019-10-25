@@ -132,10 +132,8 @@ let requestting = false;
 let commitsData = {};
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData });
-  console.log(requestting);
   if (!requestting && request) {
     fetch(request.requestUrl, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
-      console.log(data, 'bg');
       if (data.length > 0) {
         chrome.storage.sync.get([
           'developers',
