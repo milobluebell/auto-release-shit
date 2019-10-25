@@ -132,8 +132,10 @@ let requestting = false;
 let commitsData = {};
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData });
-  if (!requestting) {
+  console.log(requestting);
+  if (!requestting && request) {
     fetch(request.requestUrl, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
+      console.log(data, 'bg');
       if (data.length > 0) {
         chrome.storage.sync.get([
           'developers',
@@ -149,12 +151,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
               release_code: '#' + request.release_code
             }),
           }
-          requestting = false;
-          setTimeout(function (){
+          setTimeout(function () {
             commitsData = {};
-          }, 2000)
+          }, 1500)
         });
       }
+      requestting = false;
     });
   }
   requestting = true;

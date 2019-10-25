@@ -1,7 +1,7 @@
 window.onload = function () {
-  getReleaseCommits(getLastestReleaseCode());
 }
 
+getReleaseCommits(getLastestReleaseCode());
 /**
  * @function 获取最近一次成功构建的编号
  */
@@ -27,7 +27,9 @@ function getReleaseCommits(release_code) {
   const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`.toString();
   const $timer = setInterval(() => {
     range++;
-    if (range >= 30) {
+    if (range >= 10) {
+      console.error(`「 No Changes Detected 」 within Release #${release_code}`);
+      insertElemNodes(false);
       clearInterval($timer)
     } else {
       chrome.runtime.sendMessage({
@@ -46,8 +48,9 @@ function getReleaseCommits(release_code) {
             clearInterval($timer);
           }
         } else {
-          console.error(`「 No Changes Detected 」 within Release #${release_code}`);
           clearInterval($timer);
+          console.error(`「 Errors Occured 」 within Release #${release_code} by background script`);
+          insertElemNodes(false);
           return;
         }
       });
@@ -63,18 +66,27 @@ function insertElemNodes(shit) {
     const targetDiv = document.getElementsByClassName('table-box')[0];
     targetDiv.style.display = 'flex';
     impressionHtml = document.createElement('div');
-    let impressionHtmlTemplate = `<table class="shit table-viewPort" cellspacing="6"><tbody class="tobsTable-body">
-      <thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
-    shit.forEach(item => {
-      impressionHtmlTemplate += `<tr class="shit-job">
-        <td class="key stage-cell">${item.key}： </td>
-        <td class="value stage-cell">&nbsp;&nbsp;${item.value === 'staging' ? 'Production' : item.value}</td>
-      </tr>`;
-    });
-    impressionHtml.innerHTML = impressionHtmlTemplate + '</tbody></table>';
-    impressionStyle = document.createElement('style');
-    impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:18px;margin-top:118px}.shit .key{font-size:12px;min-width:90px}
-    .shit .value{font-size:14px;font-weight:bold}`;
+    let impressionHtmlTemplate = ``;
+    let impressionStyle = ``;
+    if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
+      impressionHtmlTemplate = `<table class="shit table-viewPort" cellspacing="6"><tbody class="tobsTable-body">
+        <thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
+      shit.forEach(item => {
+        impressionHtmlTemplate += `<tr class="shit-job">
+            <td class="key stage-cell">${item.key}： </td>
+            <td class="value stage-cell">&nbsp;&nbsp;${item.value === 'staging' ? 'Production' : item.value}</td>
+          </tr>`;
+      });
+      impressionHtml.innerHTML = impressionHtmlTemplate + '</tbody></table>';
+      impressionStyle = document.createElement('style');
+      impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:18px;margin-top:118px}.shit .key{font-size:12px;min-width:90px}
+      .shit .value{font-size:14px;font-weight:bold}`;
+    } else {
+      impressionHtmlTemplate = `<div class="shit">⚠️没有找到最后一次构建的git commit messages</div>`;
+      impressionHtml.innerHTML = impressionHtmlTemplate;
+      impressionStyle = document.createElement('style');
+      impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:18px;margin-top:118px;text-align:center;}`;
+    }
     targetDiv.appendChild(impressionHtml);
     targetDiv.appendChild(impressionStyle);
   }
