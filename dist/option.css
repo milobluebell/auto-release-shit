@@ -39,11 +39,12 @@ hr {
   align-items: flex-start;
   height: 100%;
   background-color: #fcfcfc;
+  position: relative;
 }
 .container .logo-container {
   width: 100%;
   height: 52px;
-  background-color: #999;
+  background-color: #bbb;
   font-size: 15px;
   color: #efefef;
 }
@@ -52,13 +53,19 @@ hr {
   height: 52px;
 }
 .context {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+}
+.container .page-title {
+  color: #555;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
 }
 .context .title {
-  font-size: 12px;
   font-weight: bold;
   letter-spacing: 2px;
   color: #555;
+  margin-bottom: 3px;
 }
 .content {
   position: relative;
@@ -84,4 +91,13 @@ hr {
   cursor: pointer;
   font-weight: bold;
   padding: 4px 0;
+}
+.container aside{
+  color: #d1d1d1;
+  font-size: 12px;
+  width: 100%;
+}
+.container aside *{
+  color: #d1d1d1;
+  display: inline;
 }

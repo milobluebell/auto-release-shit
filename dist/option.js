@@ -12,11 +12,11 @@ document.getElementById('submitBtn').onclick = function () {
   });
 }
 
-chrome.storage.sync.get({
-  developers,
-  testers,
-  group,
-}, function (res) {
+chrome.storage.sync.get([
+  'developers',
+  'testers',
+  'group',
+], function (res) {
   const { developers, testers, group } = res;
   document.getElementById('developers').value = developers || '';
   document.getElementById('testers').value = testers || '';

@@ -23,9 +23,6 @@
       "matches": [
         "*://jenkins.codemao.cn/*"
       ],
-      "css": [
-        "/subs/content.css"
-      ],
       "js": [
         "/subs/content.js"
       ],

@@ -146,10 +146,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
               ...res,
               ...request.env,
-              release_code: request.release_code
+              release_code: '#' + request.release_code
             }),
           }
           requestting = false;
+          setTimeout(function (){
+            commitsData = {};
+          }, 2000)
         });
       }
     });

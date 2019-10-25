@@ -1,8 +1,6 @@
-(function () {
+window.onload = function () {
   getReleaseCommits(getLastestReleaseCode());
-})();
-
-
+}
 
 /**
  * @function 获取最近一次成功构建的编号
@@ -29,7 +27,7 @@ function getReleaseCommits(release_code) {
   const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`.toString();
   const $timer = setInterval(() => {
     range++;
-    if (range >= 20) {
+    if (range >= 30) {
       clearInterval($timer)
     } else {
       chrome.runtime.sendMessage({
@@ -65,22 +63,18 @@ function insertElemNodes(shit) {
     const targetDiv = document.getElementsByClassName('table-box')[0];
     targetDiv.style.display = 'flex';
     impressionHtml = document.createElement('div');
-    let impressionHtmlTemplate = `<table class="shit table-viewPort" cellpadding="6"><tbody class="tobsTable-body">`;
+    let impressionHtmlTemplate = `<table class="shit table-viewPort" cellspacing="6"><tbody class="tobsTable-body">
+      <thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
     shit.forEach(item => {
       impressionHtmlTemplate += `<tr class="shit-job">
-        <td class="key stage-cell">${item.key}：</td>
-        <td class="value stage-cell"> ${item.value === 'staging' ? 'production' : item.value}</td>
+        <td class="key stage-cell">${item.key}： </td>
+        <td class="value stage-cell">&nbsp;&nbsp;${item.value === 'staging' ? 'Production' : item.value}</td>
       </tr>`;
     });
     impressionHtml.innerHTML = impressionHtmlTemplate + '</tbody></table>';
-
-
-
-
     impressionStyle = document.createElement('style');
-    impressionStyle.innerHTML = `.shit{max-width:480px;width:100%;margin-left:18px;margin-top:118px}.shit .key{font-size:12px;min-width:90px}
+    impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:18px;margin-top:118px}.shit .key{font-size:12px;min-width:90px}
     .shit .value{font-size:14px;font-weight:bold}`;
-
     targetDiv.appendChild(impressionHtml);
     targetDiv.appendChild(impressionStyle);
   }
