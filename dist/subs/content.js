@@ -1,11 +1,5 @@
 (function () {
-  // chrome.storage.sync.get([
-  //   'developers',
-  //   'testers'
-  // ], function (res) {
-  //   console.log(res);
-  // });
-  getReleaseCommits(getLastestSuccessReleaseCode());
+  getReleaseCommits(getLastestReleaseCode());
 })();
 
 
@@ -13,47 +7,136 @@
 /**
  * @function 获取最近一次成功构建的编号
  */
-function getLastestSuccessReleaseCode() {
-
+function getLastestReleaseCode() {
   const lastestSuccessReleases = document.getElementsByClassName('permalink-link');
   let lastestSuccessReleaseCode = 0;
   for (let i = 0; i < lastestSuccessReleases.length; i++) {
     const releaseInner = lastestSuccessReleases[i].innerHTML.toLowerCase();
-    if (releaseInner.includes('最近成功')) {
+    if (releaseInner.includes('最近一次构建')) {
       lastestSuccessReleaseCode = releaseInner.match(/\d+/g)[0];
     }
   }
   return lastestSuccessReleaseCode;
-
 }
 
 /**
  * @function 获取对应构架编号的commit内容
  */
 function getReleaseCommits(release_code) {
+  let range = 1;
   const baseUrl = window.location.href;
   const tnow = new Date().getTime();
-  const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`;
-  const targetDiv = document.getElementById('main-panel');
-  let range = 1;
-  const timer = setInterval(() => {
+  const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`.toString();
+  const $timer = setInterval(() => {
     range++;
     if (range >= 20) {
-      clearInterval(timer)
+      clearInterval($timer)
     } else {
-      chrome.runtime.sendMessage(requestUrl, function (res) {
+      chrome.runtime.sendMessage({
+        requestUrl,
+        release_code,
+        env: getEnv(),
+      }, function (res) {
         if (res && res.status) {
-          // TODO: 如果body里有数据了，则取消timer
           if (Object.keys(res.body).length > 0) {
-            console.log(res.body);
-            clearInterval(timer);
+            if (res.body.commits.length > 0 && res.body.theShit.length > 0) {
+              console.table(res.body.theShit);
+              console.info('⬇️以下是最后一次构建的git commit messages：');
+              console.table(res.body.commits);
+              insertElemNodes(res.body.theShit);
+            }
+            clearInterval($timer);
           }
         } else {
-          console.error(` oops! "auto release sh*t" extension make some troubles`);
-          clearInterval(timer);
+          console.error(`「 No Changes Detected 」 within Release #${release_code}`);
+          clearInterval($timer);
           return;
         }
       });
     }
-  }, 300);
+  }, 500);
+}
+
+/**
+ * 
+ */
+function insertElemNodes(shit) {
+  try {
+    const targetDiv = document.getElementsByClassName('table-box')[0];
+    targetDiv.style.display = 'flex';
+    impressionHtml = document.createElement('div');
+    let impressionHtmlTemplate = `<table class="shit table-viewPort" cellpadding="6"><tbody class="tobsTable-body">`;
+    shit.forEach(item => {
+      impressionHtmlTemplate += `<tr class="shit-job">
+        <td class="key stage-cell">${item.key}：</td>
+        <td class="value stage-cell"> ${item.value}</td>
+      </tr>`;
+    });
+    impressionHtml.innerHTML = impressionHtmlTemplate + '</tbody></table>';
+
+
+
+
+    impressionStyle = document.createElement('style');
+    impressionStyle.innerHTML = `.shit{max-width:480px;width:100%;margin-left:18px;margin-top:118px}.shit .key{font-size:12px;min-width:90px}
+    .shit .value{font-size:14px;font-weight:bold}`;
+
+    targetDiv.appendChild(impressionHtml);
+    targetDiv.appendChild(impressionStyle);
+  }
+  catch (err_msg) {
+    console.error(err_msg);
+  }
+}
+
+/**
+ * 获取当前环境信息
+ */
+const stagers = ['dev', 'Dev_Test', 'dev-test', 'staging', 'prodution'];
+function getEnv() {
+  const breadCrumDiv = document.getElementById('breadcrumbs');
+  const items = breadCrumDiv.getElementsByClassName('model-link');
+  return {
+    stage: getStage(),
+    proj: items[items.length - 1].innerHTML,
+    tnow: formatUsefullTime(new Date(), 'yyyy-MM-dd hh:mm'),
+  }
+}
+
+/**
+ * 获取当前所在环境是dev-test还是prod
+ */
+function getStage() {
+  const baseUrl = window.location.href.toLowerCase();
+  if (baseUrl.includes('prod') || baseUrl.includes('production')) return 'prod';
+  else if (baseUrl.includes('staging')) return 'staging';
+  else return 'dev';
+}
+
+/**
+ * @function 格式化时间格式
+ * @param {*} t time
+ * @param {*} f format
+ */
+function formatUsefullTime(t, f) {
+  if (t.toString().indexOf('Invalid Date') > -1 || t instanceof (Date) === false) return '';
+  let obj = {
+    yyyy: t.getFullYear(),
+    yy: ('' + t.getFullYear()).slice(-2),
+    M: t.getMonth() + 1,
+    MM: ('0' + (t.getMonth() + 1)).slice(-2),
+    d: t.getDate(),
+    dd: ('0' + t.getDate()).slice(-2),
+    hh: ('0' + t.getHours()).slice(-2),
+    h: t.getHours(),
+    mm: ('0' + t.getMinutes()).slice(-2),
+    m: t.getMinutes(),
+    ss: ('0' + t.getSeconds()).slice(-2),
+    s: t.getSeconds()
+  }
+  let tarResult = '';
+  tarResult += f.replace(/([a-z]+)/ig, function (r) {
+    return obj[r]
+  })
+  return tarResult;
 }

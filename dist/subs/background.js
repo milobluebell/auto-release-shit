@@ -86,10 +86,12 @@ class Vendors {
   }
 
   /**
-   * 获取当前页面显示的最后一次构建编号
+   * 
    */
-  static getLastestReleaseCode = () => {
+  static generateBlockContentWithKey(key) {
+    if (key === '') {
 
+    }
   }
 
   /**
@@ -101,7 +103,7 @@ class Vendors {
    *        [perf判定为"优化表现和性能"]
    *        [其余根据实际情况进行拼接]
    */
-  static generateOnePieceOfShit = (commits, developers, testers) => {
+  static generateOnePieceOfShit = (commits, params) => {
     const commitList = commits.reduce((prev, curr) => {
       const commitKey = curr.message.split(':')[0];
       if (commitKey === Constants.commitMessageTags.feat.label) {
@@ -113,35 +115,13 @@ class Vendors {
     }, []);
     // 
     const desc = Array.from(new Set(commitList), commit => commit).join('、');
-    return Constants.sheetFrags.reduce((pre, cur) => {
-      return pre.concat([`${cur}：`]);
+    const sheet = Constants.sheetFrags.reduce((prev, curr) => {
+      return prev.concat([{
+        key: curr.label,
+        value: curr.value === 'desc' ? desc : (params[curr.value] ? params[curr.value] : ''),
+      }]);
     }, []);
-
-    // return `项目组：平台服务组\r
-    //   项目名称：platform_transaction_cashier_frontend\r
-    //   发版环境：production\r
-    //   构建编号：#19\r
-    //   发版时间：2019年09月26日 22:52\r
-    //   项目对接人：马子航\r
-    //   测试对接人：聂亚运\r
-    //   发版说明: ${}
-    //   `;
-  }
-
-  /**
-   * 
-   */
-  static $ = (param) => {
-    if (typeof param !== 'string') {
-      return;
-    }
-    if (param[0] === '.') {
-      return document.getElementsByClassName(omitParam(param));
-    } else if (param[0] === '#') {
-      return [document.getElementById(omitParam(param))];
-    } else {
-      return document.getElementsByTagName(omitParam(param));
-    }
+    return sheet;
   }
 };
 
@@ -153,19 +133,26 @@ let commitsData = {};
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData });
   if (!requestting) {
-    fetch(request, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
-      chrome.storage.sync.get([
-        'developers',
-        'testers'
-      ], function (res) {
-        commitsData = {
-          commitCount: data[0].commitCount,
-          commits: data[0].commits,
-          theShit: Vendors.generateOnePieceOfShit(data[0].commits, res.developers, res.testers),
-        }
-        requestting = false;
-      });
+    fetch(request.requestUrl, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
+      if (data.length > 0) {
+        chrome.storage.sync.get([
+          'developers',
+          'testers',
+          'group'
+        ], function (res) {
+          commitsData = {
+            commitCount: data[0].commitCount,
+            commits: data[0].commits,
+            theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
+              ...res,
+              ...request.env,
+              release_code: request.release_code
+            }),
+          }
+          requestting = false;
+        });
+      }
     });
   }
   requestting = true;
-});
+}); 
