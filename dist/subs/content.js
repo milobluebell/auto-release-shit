@@ -1,7 +1,7 @@
 window.onload = function () {
+  getReleaseCommits(getLastestReleaseCode());
 }
 
-getReleaseCommits(getLastestReleaseCode());
 /**
  * @function 获取最近一次成功构建的编号
  */
@@ -21,6 +21,10 @@ function getLastestReleaseCode() {
  * @function 获取对应构架编号的commit内容
  */
 function getReleaseCommits(release_code) {
+  console.log(release_code, typeof release_code);
+  if (typeof release_code !== 'string' || release_code === 0) {
+    return;
+  }
   let range = 1;
   const baseUrl = window.location.href;
   const tnow = new Date().getTime();
@@ -37,13 +41,13 @@ function getReleaseCommits(release_code) {
         release_code,
         env: getEnv(),
       }, function (res) {
+        console.log(res, 'send Message');
         if (res && res.status) {
           if (Object.keys(res.body).length > 0) {
             if (res.body.commits.length > 0 && res.body.theShit.length > 0) {
-              console.table(res.body.theShit);
               console.info('⬇️以下是最后一次构建的git commit messages：');
               console.table(res.body.commits);
-              insertElemNodes(res.body.theShit);
+              insertElemNodes(res.body.theShit, res.body.needReminder);
             }
             clearInterval($timer);
           }
@@ -61,7 +65,7 @@ function getReleaseCommits(release_code) {
 /**
  * 
  */
-function insertElemNodes(shit) {
+function insertElemNodes(shit, needReminder) {
   try {
     const targetDiv = document.getElementsByClassName('table-box')[0];
     targetDiv.style.display = 'flex';
@@ -86,6 +90,9 @@ function insertElemNodes(shit) {
       impressionHtml.innerHTML = impressionHtmlTemplate;
       impressionStyle = document.createElement('style');
       impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:18px;margin-top:118px;text-align:center;}`;
+    }
+    if (needReminder) {
+      impressionHtml.innerHTML += `<span class="reminder">建议在插件选项中配置常用字段</span><style>.reminder{margin-left:18px;font-size:12px;color:#d6d6d6}</style>`;
     }
     targetDiv.appendChild(impressionHtml);
     targetDiv.appendChild(impressionStyle);

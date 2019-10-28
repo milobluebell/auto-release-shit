@@ -125,37 +125,42 @@ class Vendors {
   }
 };
 
-
-
-
 let requestting = false;
 let commitsData = {};
+const chromeStoragiced = ['developers', 'testers', 'group'];
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData });
   if (!requestting && request) {
-    fetch(request.requestUrl, { credentials: 'same-origin' }).then(res => res.json()).then(data => {
-      if (data.length > 0) {
-        chrome.storage.sync.get([
-          'developers',
-          'testers',
-          'group'
-        ], function (res) {
-          commitsData = {
-            commitCount: data[0].commitCount,
-            commits: data[0].commits,
-            theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
-              ...res,
-              ...request.env,
-              release_code: '#' + request.release_code
-            }),
-          }
-          setTimeout(function () {
-            commitsData = {};
-          }, 1500)
-        });
-      }
-      requestting = false;
-    });
+    try {
+      fetch(request.requestUrl, { credentials: 'same-origin' }).then(res => {
+        if (res.ok && res.status === 200) {
+          return res.json();
+        }
+      }).then(data => {
+        if (data && data.length > 0) {
+          // TODO: 如果添加option选项，这里还是要加一些东西的
+          chrome.storage.sync.get(chromeStoragiced, function (res) {
+            commitsData = {
+              commitCount: data[0].commitCount,
+              commits: data[0].commits,
+              theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
+                ...res,
+                ...request.env,
+                release_code: '#' + request.release_code,
+                needReminder: chromeStoragiced.every(item => item) ? false : true,
+              }),
+            }
+            setTimeout(function () {
+              commitsData = {};
+            }, 888)
+          });
+        }
+        requestting = false;
+      });
+    } catch (error) {
+      console.error(error);
+      requestting = true;
+    }
   }
   requestting = true;
 }); 
