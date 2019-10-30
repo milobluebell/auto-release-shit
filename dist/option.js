@@ -10,18 +10,17 @@ document.getElementById('submitBtn').onclick = function () {
   wrappers.forEach(item => {
     targetObj[item.children[0].id] = document.getElementById(item.children[0].id).value;
   })
-  chrome.storage.sync.set(targetObj, function (){
+  chrome.storage.sync.set(targetObj, function () {
     const theToast = document.getElementById('set-success-reminder');
     theToast.style.display = 'block';
-    setTimeout(()=> {
+    setTimeout(() => {
       theToast.style.display = 'none';
     }, 1600)
   });
 }
 
 chrome.storage.sync.get(ids, function (res) {
-  const { developers, testers, group } = res;
-  document.getElementById('developers').value = developers || '';
-  document.getElementById('testers').value = testers || '';
-  document.getElementById('group').value = group || '';
+  wrappers.forEach(item => {
+    document.getElementById(item.children[0].id).value = res[item.children[0].id] || '';
+  })
 });

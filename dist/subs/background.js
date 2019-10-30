@@ -127,7 +127,6 @@ class Vendors {
 
 let requestting = false;
 let commitsData = {};
-const chromeStoragiced = ['developers', 'testers', 'group'];
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData });
   if (!requestting && request) {
@@ -138,8 +137,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
       }).then(data => {
         if (data && data.length > 0) {
-          // TODO: 如果添加option选项，这里还是要加一些东西的
-          chrome.storage.sync.get(chromeStoragiced, function (res) {
+          chrome.storage.sync.get(null, function (res) {
             commitsData = {
               commitCount: data[0].commitCount,
               commits: data[0].commits,
@@ -147,8 +145,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 ...res,
                 ...request.env,
                 release_code: '#' + request.release_code,
-                needReminder: chromeStoragiced.every(item => item) ? false : true,
               }),
+              needReminder: Object.values(res).every(item => item) ? false : true,
             }
             setTimeout(function () {
               commitsData = {};
@@ -158,7 +156,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         requestting = false;
       });
     } catch (error) {
-      console.error(error);
+      console.warn(error);
       requestting = true;
     }
   }

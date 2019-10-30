@@ -31,7 +31,7 @@ function getReleaseCommits(release_code) {
   const $timer = setInterval(() => {
     range++;
     if (range >= 20) {
-      console.error(`「 No Changes Detected 」 within Release #${release_code}`);
+      console.warn(`「 No Changes Detected 」 within Release #${release_code}`);
       insertElemNodes(false);
       clearInterval($timer)
     } else {
@@ -51,7 +51,7 @@ function getReleaseCommits(release_code) {
           }
         } else {
           clearInterval($timer);
-          console.error(`「 Errors Occured 」 within Release #${release_code} by background script`);
+          console.warn(`「 Errors Occured 」 within Release #${release_code} by background script`);
           insertElemNodes(false);
           return;
         }
@@ -92,14 +92,14 @@ function insertElemNodes(shit, needReminder) {
     }
     // 加提示
     if (needReminder) {
-      impressionHtml.innerHTML += `<span class="reminder">建议在插件选项中配置常用字段</span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#d6d6d6}</style>`;
+      impressionHtml.innerHTML += `<span class="reminder">⚠️建议在"选项"中配置常用字段 -- Auto Release Sh*t</span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#b3b3b3}</style>`;
     }
     //
     targetDiv.appendChild(impressionHtml);
     targetDiv.appendChild(impressionStyle);
   }
   catch (err_msg) {
-    console.error(err_msg);
+    console.warn(err_msg);
   }
 }
 
