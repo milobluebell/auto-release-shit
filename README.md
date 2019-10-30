@@ -18,4 +18,4 @@
 
 
 ## Any Issue Or Enhancements
-请钉钉联系"子航"。或直接发起Pull Request，我会尽快review。
+请钉钉联系"子航"、提出[Issues](https://github.com/milobluebell/auto-release-shit/issues)，或直接发起Pull Request，我会尽快review。

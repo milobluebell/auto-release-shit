@@ -146,7 +146,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 ...request.env,
                 release_code: '#' + request.release_code,
               }),
-              needReminder: Object.values(res).every(item => item) ? false : true,
+              needReminder: (Object.values(res).every(item => item) && Object.values(res).length > 0) ? false : true,
             }
             setTimeout(function () {
               commitsData = {};

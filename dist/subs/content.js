@@ -90,8 +90,9 @@ function insertElemNodes(shit, needReminder) {
       impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:${marginLeft};margin-top:${marginTop};text-align:center;}`;
     }
     // 加提示
+    console.log(needReminder);
     if (needReminder) {
-      impressionHtml.innerHTML += `<span class="reminder">⚠️建议在"选项"中补全常用字段 -- Auto Release Sh*t</span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#b3b3b3}</style>`;
+      impressionHtml.innerHTML += `<span class="reminder">⚠️建议在"选项"中补全常用字段 -- Auto Release Sh*t · <a href="https://github.com/milobluebell/auto-release-shit/issues" target="_blank">Issues</a></span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#b3b3b3}</style>`;
     }
     //
     targetDiv.appendChild(impressionHtml);
