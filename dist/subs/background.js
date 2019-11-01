@@ -8,7 +8,7 @@ class Constants {
     },
     'fix': {
       label: `fix`,
-      conse: `修复多项缺陷/改进体验`
+      conse: `修复缺陷/改进体验`
     },
     'docs': {
       label: `docs`,
@@ -86,17 +86,23 @@ class Vendors {
   }
 
   /**
-   * 
+   * @param {*} fragmentBeforeColon
+   * @desc 根据各种其它模式，生成统一可识别的commitKey
+   *       比如 fix(sku): 这种模式，也要被识别为fix
    */
-  static generateBlockContentWithKey(key) {
-    if (key === '') {
-
-    }
+  static getUnifiedCommitKey(fragmentBeforeColon) {
+    Constants.commitMessageTags.forEach(item => {
+      if (fragmentBeforeColon.includes(item)) {
+        return item;
+      }
+    });
+    return null;
   }
 
   /**
-   * @param {*} release_code
-   * @algo  [fix判定为“修改了缺陷、改进体验”],
+   * @param {*} commits
+   * @param {*} params
+   * @algo  [fix判定为“修复缺陷、改进体验”],
    *        [docs判定为"修改了文档"]
    *        [style判定为"样式调优"],
    *        [refactor和chore判定为"项目部分重构"],
@@ -106,12 +112,15 @@ class Vendors {
   static generateOnePieceOfShit = (commits, params) => {
     const commitList = commits.reduce((prev, curr) => {
       const commitKey = curr.message.split(':')[0];
-      if (commitKey === Constants.commitMessageTags.feat.label) {
-        const commitMsg = curr.message.substring(curr.message.indexOf(':') + 2);
-        return prev.concat([commitMsg]);
-      } else {
-        return prev.concat([Constants.commitMessageTags[commitKey].conse]);
-      }
+      // 需要支持带scope的fix(!@#): 模式
+      if (Vendors.getUnifiedCommitKey(commitKey)) {
+        if (commitKey === Constants.commitMessageTags.feat.label) {
+          const commitMsg = curr.message.substring(curr.message.indexOf(':') + 2);
+          return prev.concat([commitMsg]);
+        } else {
+          return prev.concat([Constants.commitMessageTags[commitKey].conse]);
+        }
+      } else return ``;
     }, []);
     // 
     const desc = Array.from(new Set(commitList), commit => commit).join('、');
