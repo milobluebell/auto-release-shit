@@ -17,6 +17,9 @@
     "default_title": "release your sh*t elegantly",
     "default_popup": "index.html"
   },
+  "icons": {
+    "128": "imgs/favicon.png"
+  },
   "options_page": "option.html",
   "content_scripts": [
     {
