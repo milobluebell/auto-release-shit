@@ -91,12 +91,13 @@ class Vendors {
    *       比如 fix(sku): 这种模式，也要被识别为fix
    */
   static getUnifiedCommitKey(fragmentBeforeColon) {
-    Constants.commitMessageTags.forEach(item => {
+    let gap = null;
+    Object.keys(Constants.commitMessageTags).forEach(item => {
       if (fragmentBeforeColon.includes(item)) {
-        return item;
+        gap = item;
       }
     });
-    return null;
+    return gap;
   }
 
   /**
@@ -111,16 +112,14 @@ class Vendors {
    */
   static generateOnePieceOfShit = (commits, params) => {
     const commitList = commits.reduce((prev, curr) => {
-      const commitKey = curr.message.split(':')[0];
+      const commitKey = Vendors.getUnifiedCommitKey(curr.message.split(':')[0]);
       // 需要支持带scope的fix(!@#): 模式
-      if (Vendors.getUnifiedCommitKey(commitKey)) {
-        if (commitKey === Constants.commitMessageTags.feat.label) {
-          const commitMsg = curr.message.substring(curr.message.indexOf(':') + 2);
-          return prev.concat([commitMsg]);
-        } else {
-          return prev.concat([Constants.commitMessageTags[commitKey].conse]);
-        }
-      } else return ``;
+      if (commitKey === Constants.commitMessageTags.feat.label) {
+        const commitMsg = curr.message.substring(curr.message.indexOf(':') + 2);
+        return prev.concat([commitMsg]);
+      } else {
+        return prev.concat([Constants.commitMessageTags[commitKey].conse]);
+      }
     }, []);
     // 
     const desc = Array.from(new Set(commitList), commit => commit).join('、');
