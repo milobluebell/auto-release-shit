@@ -1,9 +1,9 @@
 # Auto Release Sh\*t
 
-发版申请单生成器
+会对基于Angular Commit Message规范所生成的commits，自动生成发版申请单。
 
-## 使用
-* 使用google chrome应用商店下载本扩展：**「Auto Release Sh*t」**。
+## 使用 Usage
+* 使用google chrome应用商店下载本扩展：**[「Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
 
 > 如果还无法翻墙，请点击下方链接，下载我推荐的vpn：
 > 
