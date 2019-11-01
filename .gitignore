@@ -4,3 +4,5 @@
 .vscode/
 .npmignore
 *.pem
+*.crx
+*.zip
