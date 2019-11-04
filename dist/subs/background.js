@@ -65,26 +65,7 @@ class Constants {
   }];
 }
 
-const omitParam = (param) => {
-  return param.replace(/(\#|\.)/g, '');
-};
-
-
-
 class Vendors {
-  /**
-   * @function 抓取当前页面所在发布舞台
-   * @param {*} param 
-   * @returns 'staging' | 'dev-test' | 'prod'
-   */
-  static getStage(param) {
-    const lowerParam = param.toLowerCase();
-    return lowerParam.includes(Constants.staging) ?
-      'staging'
-      :
-      lowerParam.includes(Constants.devTest) ? 'dev-test' : undefined;
-  }
-
   /**
    * @param {*} fragmentBeforeColon
    * @desc 根据各种其它模式，生成统一可识别的commitKey
@@ -113,7 +94,6 @@ class Vendors {
   static generateOnePieceOfShit = (commits, params) => {
     const commitList = commits.reduce((prev, curr) => {
       const commitKey = Vendors.getUnifiedCommitKey(curr.message.split(':')[0]);
-      // 需要支持带scope的fix(!@#): 模式
       if (commitKey === Constants.commitMessageTags.feat.label) {
         const commitMsg = curr.message.substring(curr.message.indexOf(':') + 2);
         return prev.concat([commitMsg]);
@@ -152,7 +132,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
               theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
                 ...res,
                 ...request.env,
-                release_code: '#' + request.release_code,
+                release_code: `#${request.release_code}`,
               }),
               needReminder: (Object.values(res).every(item => item) && Object.values(res).length > 0) ? false : true,
             }
