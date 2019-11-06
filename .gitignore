@@ -5,5 +5,4 @@
 node_modules/
 .npmignore
 *.crx
-*.pem
 *.zip
