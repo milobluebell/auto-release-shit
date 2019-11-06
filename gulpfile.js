@@ -1,10 +1,15 @@
 
 const fs = require("fs");
 const gulp = require("gulp");
-var crx = require('gulp-crx-pack');
-var manifest = require('./extension-src/manifest.json');
+const clean = require("gulp-clean");
+const crx = require('gulp-crx-pack');
 
-gulp.task('pack', function () {
+gulp.task('clean-scripts', function () {
+  return gulp.src('./dist', { read: false })
+    .pipe(clean({ force: true }));
+});
+
+gulp.task('pack', gulp.series(['clean-scripts'], function () {
   return gulp.src('./extension-src')
     .pipe(crx({
       privateKey: fs.readFileSync('./dist.pem', 'utf8'),
@@ -13,4 +18,4 @@ gulp.task('pack', function () {
       updateXmlFilename: 'updates.xml'
     }))
     .pipe(gulp.dest('./dist'));
-});
+}));
