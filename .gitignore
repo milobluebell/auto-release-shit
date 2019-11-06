@@ -1,8 +1,12 @@
 
+.npmignore
+
 .DS_Store
 .idea/
 .vscode/
 node_modules/
-.npmignore
+dist/
+
 *.crx
+*.xml
 *.zip
