@@ -1,5 +1,13 @@
 {
-  "version": "1.0.5",
+  "name": "auto-release-shit",
+  "version": "1.0.6",
   "author": "milo",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^6.0.3",
+    "crx": "^5.0.1",
+    "gulp": "^4.0.2",
+    "gulp-crx-pack": "^1.0.2"
+  },
+  "home": "https://github.com/milobluebell/ARS-publishment"
 }
