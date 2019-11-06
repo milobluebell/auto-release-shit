@@ -5,7 +5,7 @@ const clean = require("gulp-clean");
 const crx = require('gulp-crx-pack');
 
 gulp.task('clean-scripts', function () {
-  return gulp.src('./dist', { read: false })
+  return gulp.src('./dist', { read: false, allowEmpty: true })
     .pipe(clean({ force: true }));
 });
 
