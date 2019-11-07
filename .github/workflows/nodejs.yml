@@ -23,8 +23,14 @@ jobs:
           npm install
         env:
           CI: true
-      - name: gulp pack --pem ${{ secrets.PEM_SECRET }}
+      - name: gulp build
         run: |
-          gulp pack
+          gulp build --exts zip
         env:
           CI: true
+      - name: gulp release
+        run: |
+          gulp release
+        env:
+          CI: true
+
