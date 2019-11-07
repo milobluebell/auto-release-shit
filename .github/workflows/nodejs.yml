@@ -31,6 +31,6 @@ jobs:
       - name: upload .zip to release
         uses: JasonEtco/upload-to-release@master
         with:
-          args: dist/Auto_Release_Shit.zip
+          args: dist/Auto_Release_Shit.zip application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
