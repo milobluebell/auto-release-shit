@@ -1,9 +1,6 @@
 name: packing release
 
-on:
-  push:
-    branches:
-      - master
+on: release
 
 jobs:
   update:
