@@ -4,7 +4,7 @@
 
 <a href="https://github.com/milobluebell/auto-release-shit/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/milobluebell/auto-release-shit?color=blue"></a>
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/milobluebell/auto-release-shit?color=green)
-![](https://github.com/milobluebell/auto-release-shit/workflows/build%20action/badge.svg?branch=master)
+![](https://github.com/milobluebell/auto-release-shit/workflows/build%20action/badge.svg)
 
 
 - - -
