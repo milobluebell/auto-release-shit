@@ -5,22 +5,27 @@
 <a href="https://github.com/milobluebell/auto-release-shit/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/milobluebell/auto-release-shit?color=blue"></a>
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/milobluebell/auto-release-shit?color=green)
 ![](https://github.com/milobluebell/auto-release-shit/workflows/build%20action/badge.svg?branch=master)
+
+
 - - -
 
-## 使用 Usage
-* 使用google chrome应用商店下载本扩展：**[「Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
 
-> 如果还无法翻墙，请点击下方链接，下载我推荐的vpn：
-> 
-> [milo邀请您科学上网](https://xiyou4you.net/r/?s=6253377)
+## 🚽 安装 - Installation
+- 使用google chrome应用商店下载本扩展：**[「Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
+  
+- 或者下载本项目最新 [Auto_Release_Sh*t.zip](https://github.com/milobluebell/auto-release-shit/releases)，并且拖拽到 **“开启了开发者模式”** 的 <a href="chrome://extensions" target="_blank">chrome扩展程序管理页</a> 进行安装。
+  
 
-* 安装完成后，右击扩展图标，点击“选项”，设置你的常用参数。如图：
+## 💩 使用 - Usage
+
+1. 安装完成后，点击此扩展的图标，选择“选项”，配置你的常用参数。如图所示：
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/WX20191029-151103%402x.png)
 
 
-* 之后访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages。如图：
+2. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages **（只识别按照Angular Commit规范的提交）** 。效果如图：
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/WX20191029-152849%402x.jpg)
 
 
-## Any Issue Or Enhancements
-请钉钉联系"子航"、提出[Issues](https://github.com/milobluebell/auto-release-shit/issues)，或直接发起Pull Request，我会尽快review。
+
+## 🐈 缺陷和建议 - Any Issue Or Enhancements
+请钉钉联系"子航"、提出[Issues](https://github.com/milobluebell/auto-release-shit/issues)，或直接发起Pull Request，我会尽快进行review。
