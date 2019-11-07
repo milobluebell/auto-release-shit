@@ -93,9 +93,19 @@ class Vendors {
    */
   static generateOnePieceOfShit = (commits, params) => {
     const commitList = commits.reduce((prev, curr) => {
-      const commitKey = Vendors.getUnifiedCommitKey(curr.message.split(':')[0]);
+      let splittedMessages = curr.message.split(':');
+      let _key_ = '';
+      if (splittedMessages.length === 1) {
+        // 说明没有:分割
+        splittedMessages = curr.message.split(' ');
+        _key_ = splittedMessages[0];
+      } else {
+        _key_ = splittedMessages[0];
+      }
+      const commitKey = Vendors.getUnifiedCommitKey(_key_);
+      console.log(commitKey);
       if (commitKey === Constants.commitMessageTags.feat.label) {
-        const commitMsg = curr.message.substring(curr.message.indexOf(':') + 2);
+        const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
         return prev.concat([commitMsg]);
       } else {
         return prev.concat([Constants.commitMessageTags[commitKey].conse]);
