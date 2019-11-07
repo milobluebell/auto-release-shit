@@ -23,14 +23,15 @@ jobs:
           npm install
         env:
           CI: true
-      - name: gulp generate zip
+      - name: generate .zip
         run: |
           gulp rename
         env:
           CI: true
-      - name: gulp release
-        run: |
-          gulp release
-        env:
-          CI: true
-
+      - name: upload .zip to release
+        uses: Shopify/upload-to-release
+        with:
+          name: Auto_Release_Shit
+          path: dist/Auto_Release_Shit.zip
+          repo-token: ${{ secrets.ACCESS_TOKEN }}
+          content-type: application/zip

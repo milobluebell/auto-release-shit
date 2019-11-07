@@ -19,21 +19,20 @@ gulp.task('build', gulp.series(['clean-scripts'], function () {
     .pipe(crx({
       privateKey: fs.readFileSync('./extension-src.pem', 'utf8'),
       filename: `Auto_Release_Shit.${arg.exts || 'crx'}`,
-      codebase: 'https://github.com/milobluebell/auto-release-shit/blob/master/Auto_Release_Shit.crx?raw=true',
+      codebase: 'https://github.com/milobluebell/auto-release-shit/blob/master/dist/Auto_Release_Shit.crx?raw=true',
       updateXmlFilename: 'updates.xml'
     }))
     .pipe(gulp.dest('./dist'));
 }))
 
-gulp.task('release', async function () {
+gulp.task('release', function () {
   if (crx_version === npm_version) {
-    return await http.request({
-      json: true,
+    return http.request({
       headers: { "content-type": "application/zip" },
       method: 'post',
       url: `https://uploads.github.com/repos/milobluebell/auto-release-shit/releases/${npm_version}/assets?name=dist/Auto_Release_Shit.zip}`
-    }, function (error, res, body) {
-      if (!error && res && res.statusCode === 200) {
+    }, function (res) {
+      if (res && res.statusCode === 200) {
         return {
           data: res,
           latest: res[res.length - 1]
