@@ -38,6 +38,7 @@ gulp.task('clean-scripts', function () {
 });
 
 gulp.task('pack', gulp.series(['clean-scripts'], function () {
+  console.log(arg.pem);
   getTags();
   return gulp.src('./extension-src')
     .pipe(crx({
