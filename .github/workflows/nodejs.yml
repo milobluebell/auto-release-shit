@@ -29,9 +29,8 @@ jobs:
         env:
           CI: true
       - name: upload .zip to release
-        uses: Shopify/upload-to-release@1.0.0
+        uses: JasonEtco/upload-to-release@master
         with:
-          name: Auto_Release_Shit
-          path: dist/Auto_Release_Shit.zip
-          repo-token: ${{ secrets.ACCESS_TOKEN }}
-          content-type: application/zip
+          args: /dist/Auto_Release_Shit.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
