@@ -1,6 +1,9 @@
 name: packing release
 
-on: release
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   update:
@@ -29,19 +32,10 @@ jobs:
         env:
           CI: true
 
-      - name: Build Docker image
-        uses: actions/docker/cli@master
+      - uses: Shopify/upload-to-release@master
+        id: Shopify/upload-to-release
         with:
-          args: build . -t my-image
-          
-      - name: Save the image
-        uses: actions/docker/cli@master
-        with:
-          args: save my-image:latest
-
-      - name: upload .zip to release
-        uses: JasonEtco/upload-to-release@master
-        with:
-          args: dist/Auto_Release_Shit.zip application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          name: Auto_Release_Shit
+          path: dist/Auto_Release_Shit.zip
+          repo-token: ${{ secrets.ACCESS_TOKEN }}
+          content-type: application/zip
