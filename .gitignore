@@ -1,10 +1,12 @@
 
 .npmignore
 
+*.crx
+*.pem
+*.zip
+
 .DS_Store
 .idea/
 .vscode/
 node_modules/
-
-*.pem
-*.zip
+!dist/*.crx
