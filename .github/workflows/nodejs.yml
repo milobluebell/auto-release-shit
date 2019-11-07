@@ -10,21 +10,35 @@ jobs:
         node-version: [8.x, 10.x, 12.x]
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: npm install
         run: |
           npm ci
           npm install
         env:
           CI: true
+
       - name: generate .zip
         run: |
           gulp rename
         env:
           CI: true
+
+      - name: Build Docker image
+        uses: actions/docker/cli@master
+        with:
+          args: build . -t my-image
+          
+      - name: Save the image
+        uses: actions/docker/cli@master
+        with:
+          args: save my-image:latest
+
       - name: upload .zip to release
         uses: JasonEtco/upload-to-release@master
         with:
