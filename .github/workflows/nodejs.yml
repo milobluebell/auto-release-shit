@@ -34,7 +34,6 @@ jobs:
 
       - name: upload .zip to release
         uses: Shopify/upload-to-release@1.0.0
-        id: Shopify/upload-to-release
         with:
           name: Auto_Release_Shit
           path: dist/Auto_Release_Shit.zip
