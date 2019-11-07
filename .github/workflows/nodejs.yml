@@ -23,9 +23,9 @@ jobs:
           npm install
         env:
           CI: true
-      - name: gulp build
+      - name: gulp generate zip
         run: |
-          gulp build --exts zip
+          gulp rename
         env:
           CI: true
       - name: gulp release
