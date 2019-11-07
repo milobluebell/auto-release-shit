@@ -1,4 +1,4 @@
-name: packing release crx and .zip
+name: build action
 
 on:
   push:

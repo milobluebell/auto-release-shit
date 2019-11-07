@@ -2,6 +2,11 @@
 
 会对基于Angular Commit Message规范所生成的commits，自动生成发版申请单。
 
+<a href="https://github.com/milobluebell/auto-release-shit/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/milobluebell/auto-release-shit?color=blue"></a>
+![GitHub closed issues](https://img.shields.io/github/issues-closed/milobluebell/auto-release-shit?color=green)
+![](https://github.com/milobluebell/auto-release-shit/workflows/build%20action/badge.svg?branch=master)
+- - -
+
 ## 使用 Usage
 * 使用google chrome应用商店下载本扩展：**[「Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
 
