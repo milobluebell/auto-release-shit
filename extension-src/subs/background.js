@@ -97,13 +97,11 @@ class Vendors {
       let _key_ = '';
       if (splittedMessages.length === 1) {
         // 说明没有:分割
-        splittedMessages = curr.message.split(' ');
-        _key_ = splittedMessages[0];
+        _key_ = curr.message.split(' ')[0];
       } else {
         _key_ = splittedMessages[0];
       }
       const commitKey = Vendors.getUnifiedCommitKey(_key_);
-      console.log(commitKey);
       if (commitKey === Constants.commitMessageTags.feat.label) {
         const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
         return prev.concat([commitMsg]);
