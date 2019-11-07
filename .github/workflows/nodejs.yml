@@ -1,4 +1,4 @@
-name: Release .CRX
+name: packing release
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
           npm install
         env:
           CI: true
-      - name: gulp pack
+      - name: gulp pack --pem ${{ secrets.PEM_SECRET }}
         run: |
           gulp pack
         env:

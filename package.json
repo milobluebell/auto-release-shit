@@ -1,6 +1,6 @@
 {
   "name": "auto-release-shit",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "milo",
   "license": "MIT",
   "devDependencies": {
@@ -8,7 +8,8 @@
     "crx": "^5.0.1",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
-    "gulp-crx-pack": "^1.0.2"
+    "gulp-crx-pack": "^1.0.2",
+    "minimist": "^1.2.0"
   },
   "home": "https://github.com/milobluebell/auto-release-shit"
 }
