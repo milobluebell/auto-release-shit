@@ -3,7 +3,6 @@
   "name": "Auto Release Sh*t",
   "description": "自动生成发版申请",
   "version": "1.1.1",
-  "update_url": "https://raw.githubusercontent.com/milobluebell/auto-release-shit/master/updates.xml",
   "permissions": [
     "tabs",
     "webRequest",
