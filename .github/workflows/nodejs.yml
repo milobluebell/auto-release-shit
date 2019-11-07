@@ -1,9 +1,9 @@
-name: packing release
+name: packing release crx and .zip
 
 on:
   push:
-    branches:
-      - master
+    tags:
+    - 'v*'
 
 jobs:
   update:
@@ -32,10 +32,24 @@ jobs:
         env:
           CI: true
 
-      - name: upload .zip to release
-        uses: Shopify/upload-to-release@1.0.0
+      - name: create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         with:
-          name: Auto_Release_Shit
-          path: dist/Auto_Release_Shit.zip
-          repo-token: ${{ secrets.ACCESS_TOKEN }}
-          content-type: application/zip
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/Auto_Release_Shit.zip
+          asset_name: Auto_Release_Shit.zip
+          asset_content_type: application/zip
