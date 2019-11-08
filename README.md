@@ -1,6 +1,6 @@
-# Auto Release Sh\*t
+# Auto Release Sh*t
 
-会对基于Angular Commit Message规范所生成的commits，自动生成发版申请单。
+一个chrome浏览器插件。会对基于Angular Commit Message规范所生成的commits，自动生成发版申请单。
 
 <a href="https://github.com/milobluebell/auto-release-shit/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/milobluebell/auto-release-shit?color=blue"></a>
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/milobluebell/auto-release-shit?color=green)
@@ -13,7 +13,7 @@
 ## 🚽 安装 - Installation
 - 使用google chrome应用商店下载本扩展：**[「Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
   
-- 或者下载本项目最新 [Auto_Release_Sh*t.zip](https://github.com/milobluebell/auto-release-shit/releases)，并且拖拽到 **“开启了开发者模式”** 的 <a href="chrome://extensions" target="_blank">chrome扩展程序管理页</a> 进行安装。
+- 或者下载本项目最新 [Auto_Release_Sh*t.zip](https://github.com/milobluebell/auto-release-shit/releases)，并将其直接拖拽到，开启了"开发者模式"的 [chrome扩展程序管理页](https://github.com/milobluebell/auto-release-shit/releases) 进行安装。
   
 
 ## 💩 使用 - Usage
@@ -29,4 +29,9 @@
 
 ## 🐈 缺陷和建议 - Any Issue Or Enhancements
 请钉钉联系"子航"、提出[Issues](https://github.com/milobluebell/auto-release-shit/issues)，或直接发起Pull Request，我会尽快进行review。
+
+
+ - - -
+### [read more](https://github.com/milobluebell/auto-release-shit/blob/master/others/more.md)
+
 
