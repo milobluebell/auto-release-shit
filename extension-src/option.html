@@ -8,36 +8,13 @@
 </head>
 
 <body class="earth">
-  <section class="container">
+  <section class="container" id="container">
     <div class="logo-container">
       <img class="logo" src="./imgs/favicon.png" />🧾
     </div>
     <span class="page-title">常用设置</span>
     <hr />
-    <dl class="context">
-      <dt class="title">
-        <label for="group">所属项目组：</label>
-      </dt>
-      <dd class="content">
-        <input id="group" />
-      </dd>
-    </dl>
-    <dl class="context">
-      <dt class="title">
-        <label for="developers">开发对接人：</label>
-      </dt>
-      <dd class="content">
-        <input id="developers" />
-      </dd>
-    </dl>
-    <dl class="context">
-      <dt class="title">
-        <label for="testers">测试对接人：</label>
-      </dt>
-      <dd class="content">
-        <input id="testers" />
-      </dd>
-    </dl>
+    <div id="options-container" class="options-container"></div>
     <button class="submit-btn" id="submitBtn">确认保存</button>
     <hr />
     <aside>

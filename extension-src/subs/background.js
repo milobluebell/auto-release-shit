@@ -52,7 +52,7 @@ class Constants {
     label: `发版时间`
   }, {
     value: `developers`,
-    label: `项目对接人`,
+    label: `开发对接人`,
     default: 'person D1、person D2'
   }, {
     value: `testers`,

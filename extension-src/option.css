@@ -48,6 +48,9 @@ hr {
   font-size: 15px;
   color: #efefef;
 }
+.container .options-container {
+  width: 100%;
+}
 .container .logo-container .logo {
   width: 52px;
   height: 52px;
@@ -62,13 +65,52 @@ hr {
   text-align: center;
 }
 .context .title {
+  position: relative;
   font-weight: bold;
   letter-spacing: 2px;
   color: #555;
   margin-bottom: 3px;
+  cursor: default;
+}
+.context .title .drag-bar{
+  display: none;  
+}
+.context:hover .title .drag-bar {
+  position: absolute;
+  width: 12px;
+  height: 100%;
+  top: 0;
+  left: -12px;
+  cursor: move;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  letter-spacing: 0;
 }
 .content {
   position: relative;
+}
+.content .btn{
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  top: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  display: none;
+}
+.context:hover .content .insert-btn {
+  display: block;
+  right: -20px;
+}
+.context:hover .content .remove-btn {
+  display: block;
+  right: -40px;
 }
 .content input {
   outline: none;
