@@ -49,7 +49,7 @@ function setState(newState = []) {
       return prev.concat([
         `
         <dl class="context" data-index="${index}">
-          <dt class="title" draggable="true">
+          <dt class="title drag-area" draggable="true" data-index="${index}">
             <span>${curr.title}</span>
             <div class="drag-bar" data-index="${index}">::</div>
           </dt>
@@ -76,7 +76,6 @@ function getStoragedValues() {
     })
   });
 }
-
 
 /**
  * start script
@@ -109,3 +108,9 @@ document.getElementById('remove-btn').onclick = function (e) {
 document.getElementById('insert-btn').onclick = function (e) {
   removeOption(e.target.dataset.index);
 }
+console.log(Array.from(document.getElementsByClassName('drag-area')));
+Array.from(document.getElementsByClassName('drag-area')).forEach((item, index) => {
+  item.ondragstart = function (e) {
+    console.log(e.target.dataset);
+  }
+})

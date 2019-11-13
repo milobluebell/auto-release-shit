@@ -59,7 +59,7 @@ hr {
   margin-bottom: 20px;
 }
 .container .page-title {
-  color: #555;
+  color: #777;
   font-weight: bold;
   width: 100%;
   text-align: center;
@@ -70,7 +70,6 @@ hr {
   letter-spacing: 2px;
   color: #555;
   margin-bottom: 3px;
-  cursor: default;
 }
 .context .title .drag-bar{
   display: none;  
@@ -103,6 +102,7 @@ hr {
   font-size: 16px;
   font-weight: bold;
   display: none;
+  color: #777;
 }
 .context:hover .content .insert-btn {
   display: block;
