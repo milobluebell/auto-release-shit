@@ -76,10 +76,11 @@ function insertElemNodes(shit, needReminder) {
     if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
       impressionHtmlTemplate = `<div class="shit"><table cellspacing="6" id="shit"><tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
       shit.forEach(item => {
+        const canEditable = ['发版时间', '测试对接人', '发版说明'];
         impressionHtmlTemplate += `
           <tr class="shit-job" style="${item.key === '发版说明' ? 'position: relative' : ''}">
             <td class="key stage-cell">${item.key}： </td>
-            <td class="value stage-cell" id="${item.key}" contenteditable=${item.key === '发版时间' ? true : false}>${item.value === 'staging' ? 'Production' : item.value}${(item.key === '发版说明' && item.value.length >= 70) ? '<button title="格式化" class="toggle-mode" onclick="const desc = document.getElementById(\'发版说明\').childNodes[0].nodeValue;document.getElementById(\'发版说明\').innerHTML = \'<li>--  \' + desc.split(\'\、\').join(\'<li>--  \')"><img src="/static/44b87a8b/images/48x48/notepad.png"/></button>' : ''}</td>
+            <td class="value stage-cell" id="${item.key}" contenteditable=${canEditable.includes(item.key) ? true : false}>${item.value === 'staging' ? 'Production' : item.value}${(item.key === '发版说明' && item.value.length >= 80) ? '<button title="格式化" class="toggle-mode" onclick="const desc = document.getElementById(\'发版说明\').childNodes[0].nodeValue;document.getElementById(\'发版说明\').innerHTML = \'<li>--  \' + desc.split(\'\、\').join(\'<li>--  \')"><img src="/static/44b87a8b/images/48x48/notepad.png"/></button>' : ``}</td>
           </tr>
         `;
       });
