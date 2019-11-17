@@ -70,27 +70,20 @@ hr {
   letter-spacing: 2px;
   color: #555;
   margin-bottom: 3px;
+  cursor: default;
 }
-.context .title .drag-bar{
-  display: none;  
+.context .title span[contenteditable="true"] {
+  cursor: auto;
+  padding: 0 2px;
+  outline: none;
 }
-.context:hover .title .drag-bar {
-  position: absolute;
-  width: 12px;
-  height: 100%;
-  top: 0;
-  left: -12px;
-  cursor: move;
-  display: flex;
-  align-items: center;
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 12px;
-  letter-spacing: 0;
+.context .title span[contenteditable="true"]:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
 .content {
   position: relative;
 }
-.content .btn{
+.content .btn {
   position: absolute;
   width: 20px;
   height: 100%;
