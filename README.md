@@ -18,7 +18,7 @@
 
 ## 💩 使用 - Usage
 
-1. 安装完成后，点击此扩展的图标，选择“选项”，配置你的常用参数。如图所示：
+1. 安装完成后，点击浏览器右上角的图标，选择“选项”，配置你的常用参数。如图所示：
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/WX20191029-151103%402x.png)
 
 

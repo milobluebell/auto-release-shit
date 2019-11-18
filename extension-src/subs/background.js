@@ -64,6 +64,9 @@ class Constants {
     default: ''
   }];
 }
+chrome.storage.sync.get(null, res => {
+  console.log(res);
+})
 
 class Vendors {
   /**
@@ -84,14 +87,15 @@ class Vendors {
   /**
    * @param {*} commits
    * @param {*} params
-   * @algo  [fix判定为“修复缺陷、改进体验”],
+   * @algo  [fix判定为“修复缺陷、改进体验”]
    *        [docs判定为"修改了文档"]
-   *        [style判定为"样式调优"],
-   *        [refactor和chore判定为"项目部分重构"],
+   *        [style判定为"样式调优"]
+   *        [refactor和chore判定为"项目部分重构"]
    *        [perf判定为"优化表现和性能"]
    *        [其余根据实际情况进行拼接]
    */
   static generateOnePieceOfShit = (commits, params) => {
+    console.log(params);
     const commitList = commits.reduce((prev, curr) => {
       let splittedMessages = curr.message.split(':');
       let _key_ = '';

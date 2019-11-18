@@ -76,18 +76,19 @@ function insertElemNodes(shit, needReminder) {
     if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
       impressionHtmlTemplate = `<div class="shit"><table cellspacing="6" id="shit"><tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
       shit.forEach(item => {
-        const canEditable = ['发版时间', '测试对接人', '发版说明'];
-        impressionHtmlTemplate += `
+        const canEditable = ['发版时间', '测试对接人', '发版说明', '项目名称'];
+        const permanents = ['项目组', '开发对接人', '测试对接人'];
+        (permanents.includes(item.key) || item.value) ? impressionHtmlTemplate += `
           <tr class="shit-job" style="${item.key === '发版说明' ? 'position: relative' : ''}">
             <td class="key stage-cell">${item.key}： </td>
             <td class="value stage-cell" id="${item.key}" contenteditable=${canEditable.includes(item.key) ? true : false}>${item.value === 'staging' ? 'Production' : item.value}${(item.key === '发版说明' && item.value.length >= 80) ? '<button title="格式化" class="toggle-mode" onclick="const desc = document.getElementById(\'发版说明\').childNodes[0].nodeValue;document.getElementById(\'发版说明\').innerHTML = \'<li>--  \' + desc.split(\'\、\').join(\'<li>--  \')"><img src="/static/44b87a8b/images/48x48/notepad.png"/></button>' : ``}</td>
           </tr>
-        `;
+        ` : ``;
       });
       impressionHtmlTemplate += '</tbody></table>';
       impressionHtml.innerHTML = impressionHtmlTemplate + '<button class="copy-btn" id="arsCopyBtn">复制</button></div>';
       impressionStyle = document.createElement('style');
-      impressionStyle.innerHTML = `.shit{position:relative;max-width:460px;width:100%;margin-left:${marginLeft};margin-top:${marginTop};}.shit table{border:solid 1px #ccc;min-width:100%}.shit-job .stage-cell[contenteditable='true']:hover{background-color:rgba(0,0,0,.04);}.shit li{list-style:none}.toggle-mode{cursor:pointer;position:absolute;right:3px;padding:0;margin:0;text-align:center;line-height:12px}.toggle-mode img{width:13px;height:13px;}.shit .key{font-size:12px;min-width:90px}.shit .value{font-size:14px;font-weight:bold;text-indent:3px}.shit tr:nth-of-type(3) td:nth-of-type(2){background:rgba(0,0,0,.07)}.copy-btn{width:100%;outline: none;cursor:pointer;font-weight: bold;padding: 4px 0;margin-top:6px}`;
+      impressionStyle.innerHTML = `.shit{position:relative;max-width:500px;width:100%;margin-left:${marginLeft};margin-top:${marginTop};}.shit table{border:solid 1px #ccc;min-width:100%}.shit-job .stage-cell[contenteditable='true']:hover{background-color:rgba(0,0,0,.04);}.shit li{list-style:none}.toggle-mode{cursor:pointer;position:absolute;right:3px;padding:0;margin:0;text-align:center;line-height:12px}.toggle-mode img{width:13px;height:13px;}.shit .key{font-size:13px;min-width:100px}.shit .value{font-size:14px;font-weight:bold;text-indent:3px}.shit tr:nth-of-type(3) td:nth-of-type(2){background:rgba(0,0,0,.07)}.copy-btn{width:100%;outline: none;cursor:pointer;font-weight: bold;padding: 4px 0;margin-top:6px}`;
     } else {
       impressionHtmlTemplate = `<div class="shit">⚠️没有找到最后一次构建的git commit messages</div>`;
       impressionHtml.innerHTML = impressionHtmlTemplate;
