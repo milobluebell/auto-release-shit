@@ -1,0 +1,48 @@
+.shit {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  margin-left: 18px;
+  margin-top: 153px;
+}
+.shit table {
+  min-width: 100%;
+}
+.shit-job .stage-cell[contenteditable="true"]:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.shit li {
+  list-style: none;
+}
+.toggle-mode {
+  cursor: pointer;
+  position: absolute;
+  right: 3px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  line-height: 12px;
+}
+.toggle-mode img {
+  width: 13px;
+  height: 13px;
+}
+.shit .key {
+  font-size: 13px;
+  min-width: 100px;
+}
+.shit .value {
+  font-size: 14px;
+  font-weight: bold;
+  text-indent: 3px;
+}
+.shit tr:nth-of-type(3) td:nth-of-type(2) {
+  background: rgba(0, 0, 0, 0.07);
+}
+.copy-btn {
+  margin-top: 6px;
+}
+.reminder {
+  margin-top: 6px;
+  margin-left: 18px;
+}

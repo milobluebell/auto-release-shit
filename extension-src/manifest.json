@@ -29,6 +29,10 @@
       "js": [
         "/subs/content.js"
       ],
+      "css": [
+        "common/common.css",
+        "subs/content.css"
+      ],
       "run_at": "document_idle"
     }
   ],

@@ -71,10 +71,8 @@ function insertElemNodes(shit, needReminder) {
     let impressionHtmlTemplate = ``;
     let impressionStyle = ``;
     let impressionScript = ``;
-    const marginTop = '153px';
-    const marginLeft = '18px';
     if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
-      impressionHtmlTemplate = `<div class="shit"><table cellspacing="6" id="shit"><tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
+      impressionHtmlTemplate = `<div class="shit"><table cellspacing="6" id="shit" class="common-table"><tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
       shit.forEach(item => {
         const canEditable = ['发版时间', '测试对接人', '发版说明', '项目名称'];
         const permanents = ['项目组', '开发对接人', '测试对接人'];
@@ -86,18 +84,13 @@ function insertElemNodes(shit, needReminder) {
         ` : ``;
       });
       impressionHtmlTemplate += '</tbody></table>';
-      impressionHtml.innerHTML = impressionHtmlTemplate + '<button class="copy-btn" id="arsCopyBtn">复制</button></div>';
-      impressionStyle = document.createElement('style');
-      impressionStyle.innerHTML = `.shit{position:relative;max-width:500px;width:100%;margin-left:${marginLeft};margin-top:${marginTop};}.shit table{border:solid 1px #ccc;min-width:100%}.shit-job .stage-cell[contenteditable='true']:hover{background-color:rgba(0,0,0,.04);}.shit li{list-style:none}.toggle-mode{cursor:pointer;position:absolute;right:3px;padding:0;margin:0;text-align:center;line-height:12px}.toggle-mode img{width:13px;height:13px;}.shit .key{font-size:13px;min-width:100px}.shit .value{font-size:14px;font-weight:bold;text-indent:3px}.shit tr:nth-of-type(3) td:nth-of-type(2){background:rgba(0,0,0,.07)}.copy-btn{width:100%;outline: none;cursor:pointer;font-weight: bold;padding: 4px 0;margin-top:6px}`;
+      impressionHtml.innerHTML = impressionHtmlTemplate + '<button class="copy-btn common-btn" id="arsCopyBtn">复制</button></div>';
     } else {
-      impressionHtmlTemplate = `<div class="shit">⚠️没有找到最后一次构建的git commit messages</div>`;
-      impressionHtml.innerHTML = impressionHtmlTemplate;
-      impressionStyle = document.createElement('style');
-      impressionStyle.innerHTML = `.shit{max-width:460px;width:100%;margin-left:${marginLeft};margin-top:${marginTop};text-align:center;}`;
+      impressionHtml.innerHTML = `<div class="common-alert shit">⚠️没有找到最后一次构建的git commit messages</div>`;
     }
     // 加提示
     if (needReminder) {
-      impressionHtml.innerHTML += `<span class="reminder">⚠️建议在"选项"中补全常用字段 -- Auto Release Sh*t</span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#b3b3b3}</style>`;
+      impressionHtml.innerHTML += `<span class="common-alert reminder">⚠️建议在右上角Auto Release Sh*t插件"选项"中补全常用字段</span>`;
     }
 
     impressionScript = document.createElement('script');
@@ -120,10 +113,8 @@ function insertElemNodes(shit, needReminder) {
         setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 888)
       }
     `;
-
     //
     targetDiv.appendChild(impressionHtml);
-    targetDiv.appendChild(impressionStyle);
     targetDiv.appendChild(impressionScript);
   }
   catch (err_msg) {

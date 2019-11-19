@@ -28,7 +28,7 @@ function setState(newState = []) {
             <span>${curr.title}</span>：
           </dt>
           <dd class="content">
-            <input id="${curr.localStorage_key}" data-index="${index}"/>
+            <input class="common-ipt" id="${curr.localStorage_key}" data-index="${index}"/>
           </dd>
         </dl>
         `
@@ -88,7 +88,7 @@ document.getElementById('submitBtn').onclick = function () {
     theToast.style.display = 'block';
     setTimeout(() => {
       theToast.style.display = 'none';
-    }, 888)
+    }, 888);
   });
 }
 bindEvent();
