@@ -112,7 +112,7 @@ function insertElemNodes(shit, needReminder, release_code) {
           ${shit ? '' : '选择'}构建编号：
           <select id="realease_code_selector">`;
     let i = 0;
-    while (i < 11) {
+    while (i < 15 && (getLastestReleaseCode() - i > 0)) {
       impressionHtmlTemplate += `
           <option value="${'#' + (getLastestReleaseCode() - i)}" ${parseInt(release_code) === (getLastestReleaseCode() - i) ? 'selected' : ''}>
             #${getLastestReleaseCode() - i}
