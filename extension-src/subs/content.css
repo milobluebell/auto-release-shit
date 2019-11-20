@@ -1,8 +1,14 @@
+#arsWrapper {
+  margin-left: 18px;
+}
 .shit {
   position: relative;
   max-width: 500px;
   width: 100%;
-  margin-left: 18px;
+  margin-top: 173px;
+  border-radius: 5px;
+}
+.shit.n-shit {
   margin-top: 173px;
 }
 .shit table {
@@ -44,12 +50,11 @@
 }
 .common-alert {
   margin-top: 6px;
-  margin-left: 18px;
 }
-.release-code{
+.release-code {
   margin-bottom: 6px;
   border-radius: 5px;
 }
-.release-code select{
+.release-code select {
   width: 72px;
 }

@@ -123,16 +123,22 @@ class Vendors {
   /**
    * @param {*} release_code
    */
-  static getCommitsAndPrintAllThings = (release_code, withEcho = false) => {
+  static getCommitsAndPrintAllThings = (release_code, inEcho = false) => {
     const requestUrl = requestInfo.requestUrl.replace(/\/[1-9]+\//g, `/${release_code}/`);
-    try {
-      fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
-        if (res.ok && res.status === 200) {
-          return res.json();
-        }
-      }).then(data => {
-        if (data && data.length > 0) {
-          chrome.storage.sync.get(null, function (res) {
+    fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
+      if (res.ok && res.status === 200) {
+        return res.json();
+      } else {
+        chrome.tabs.getSelected(null, function (tab) {
+          chrome.tabs.sendRequest(tab.id, Object.assign({
+            release_code: release_code
+          }, commitsData));
+        });
+      }
+    }).then(data => {
+      if (data) {
+        chrome.storage.sync.get(null, function (res) {
+          if (data.length > 0) {
             commitsData = {
               commitCount: data[0].commitCount,
               commits: data[0].commits,
@@ -142,27 +148,24 @@ class Vendors {
                 release_code: `#${release_code}`,
               }),
               needReminder: (Object.values(res).every(item => item) && Object.values(res).length > 0) ? false : true,
-              self: theExtension,
               release_code: release_code,
             }
-            setTimeout(function () {
-              commitsData = {};
-            }, 888);
-            if (withEcho) {
-              chrome.tabs.getSelected(null, function (tab) {
-                chrome.tabs.sendRequest(tab.id, commitsData);
-              });
-            }
-          });
-        }
-        requestting = false;
-      });
-    } catch (error) {
-      console.warn(error);
-      requestting = true;
-    }
+          }
+          setTimeout(function () {
+            commitsData = {};
+          }, 888);
+          if (inEcho) {
+            chrome.tabs.getSelected(null, function (tab) {
+              chrome.tabs.sendRequest(tab.id, Object.assign({
+                release_code: release_code
+              }, commitsData));
+            });
+          }
+        });
+      }
+      requestting = false;
+    });
   }
-
 };
 
 /**
@@ -171,10 +174,11 @@ class Vendors {
 var requestting = false, theExtension, requestInfo, commitsData;
 chrome.management.getSelf(res => theExtension = res);
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
-  Vendors.getCommitsAndPrintAllThings(request.release_code.split('#')[1], true);
+  Vendors.getCommitsAndPrintAllThings(request.release_code.split('#')[1], true)
+  sendResponse({ status: true, body: commitsData, self: theExtension });
 })
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  sendResponse({ status: true, body: commitsData, });
+  sendResponse({ status: true, body: commitsData, self: theExtension });
   requestInfo = request;
   if (!requestting && request) {
     Vendors.getCommitsAndPrintAllThings(request.release_code);

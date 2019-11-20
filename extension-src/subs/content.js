@@ -1,16 +1,18 @@
 window.onload = function () {
   getReleaseCommits(getLastestReleaseCode());
-  chrome.extension.onRequest.addListener((response, sender, sendResponse) => {
-    if (response && response.theShit && Object.values(response.theShit).length > 0) {
-      cleanShit().then(res => {
-        if (res) {
+  chrome.extension.onRequest.addListener((response) => {
+    cleanShit().then(res => {
+      if (res) {
+        if (response && response.theShit && Object.values(response.theShit).length > 0) {
           insertElemNodes(response.theShit, response.needReminder, response.release_code);
+        } else {
+          insertElemNodes(false, false, response.release_code);
         }
-      });
-    }
+      }
+    });
   });
 }
-let self;
+let _self = { id: null };
 
 /**
  * @function 获取最近一次成功构建的编号
@@ -40,8 +42,7 @@ function getReleaseCommits(release_code) {
   const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`.toString();
   const $timer = setInterval(() => {
     range++;
-    if (range >= 20) {
-      console.warn(`「 No Changes Detected 」 within Release #${release_code}`);
+    if (range >= 15) {
       insertElemNodes(false);
       clearInterval($timer)
     } else {
@@ -51,32 +52,33 @@ function getReleaseCommits(release_code) {
         env: getEnv(),
       }, function (res) {
         if (res && res.status) {
+          _self = res.self;
           if (res.body && Object.keys(res.body).length > 0) {
-            self = res.body.self;
             if (res.body.commits.length > 0 && res.body.theShit.length > 0) {
-              console.info(`${res.body.self.name} ${res.body.self.installType} ${res.body.self.version}`);
+              console.info(`${res.self.name} ${res.self.installType} ${res.self.version}`);
               insertElemNodes(res.body.theShit, res.body.needReminder, release_code);
             }
             clearInterval($timer);
           }
         } else {
           clearInterval($timer);
-          console.warn(`「 Errors Occured 」 within Release #${release_code} by background script`);
+          console.error(`「 Errors Occured 」 within Release #${release_code} by background script`);
           insertElemNodes(false);
           return;
         }
       });
     }
-  }, 500);
+  }, 300);
 }
 
 /**
  * 
  */
-function cleanShit() {
+function cleanShit(force = false) {
   return new Promise((resolve) => {
     const jenkinsContainer = document.getElementsByClassName('cbwf-stage-view')[0];
     let isWrapperClear = false, isScriptclear = false;
+
     if (document.getElementById('arsScript')) {
       jenkinsContainer.removeChild(document.getElementById('arsScript'));
       isScriptclear = true;
@@ -105,21 +107,22 @@ function insertElemNodes(shit, needReminder, release_code) {
     impressionScript.id = 'arsScript';
     let impressionHtmlTemplate = ``;
     let hasShits = true;
-    if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
-      impressionHtmlTemplate = `<div class="shit">
+    impressionHtmlTemplate = `<div class="shit">
         <div class="release-code common-div">
-          构建编号：
+          ${shit ? '' : '选择'}构建编号：
           <select id="realease_code_selector">`;
-      let i = 0;
-      while (i < 11) {
-        impressionHtmlTemplate += `
-          <option value="${'#' + (getLastestReleaseCode() - i)}" ${parseInt(release_code) === (getLastestReleaseCode() - i) ? 'selected' : ''}>#${getLastestReleaseCode() - i}</option>
-        `;
-        i++;
-      }
+    let i = 0;
+    while (i < 11) {
       impressionHtmlTemplate += `
-          </select>
-        </div>
+          <option value="${'#' + (getLastestReleaseCode() - i)}" ${parseInt(release_code) === (getLastestReleaseCode() - i) ? 'selected' : ''}>
+            #${getLastestReleaseCode() - i}
+          </option>
+        `;
+      i++;
+    }
+    impressionHtmlTemplate += `</select>`;
+    if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
+      impressionHtmlTemplate += `</div>
       <table cellspacing="6" id="shit" class="common-table">
       <tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
       shit.forEach(item => {
@@ -134,46 +137,40 @@ function insertElemNodes(shit, needReminder, release_code) {
         ` : ``;
       });
       impressionHtmlTemplate += '</tbody></table><button class="copy-btn common-btn" id="arsCopyBtn">复制</button></div>';
-      impressionHtml.innerHTML = impressionHtmlTemplate;
     } else {
-      impressionHtmlTemplate = `<div class="shit common-alert">⚠️没有找到最后一次构建的git commit messages</div>`;
-      impressionHtml.innerHTML = impressionHtmlTemplate;
+      impressionHtmlTemplate += `<span class="common-alert">⚠️没有找到对应的commits</span>`;
       hasShits = false;
     }
+    impressionHtml.innerHTML = impressionHtmlTemplate;
     // 加提示
     if (needReminder) {
       impressionHtml.innerHTML += `<span class="common-alert">⚠️请在右上角插件的"选项"中补全常用字段 -- Auto Release Sh*t</span>`;
     }
-
-    impressionScript.innerHTML = `document.getElementById('arsCopyBtn').onclick = function(){
-        const theTableArea = document.getElementById('shit');
-        if (document.body.createTextRange) {
-          const range = document.body.createTextRange();
-          range.moveToElementText(theTableArea);
-          range.select();
-        } else if (window.getSelection) {
-          const selection = window.getSelection();
-          const range = document.createRange();
-          range.selectNodeContents(theTableArea);
-          selection.removeAllRanges();
-          selection.addRange(range);
-        }
-        document.execCommand('Copy','false',null);
-        document.getElementById('arsCopyBtn').innerHTML = '复制成功！';
-        setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 888)
-      }
+    impressionScript.innerHTML = `
       document.getElementById('realease_code_selector').onchange = function (e){
-        chrome.runtime.sendMessage('${self.id}', {
+        chrome.runtime.sendMessage('${_self.id}', {
           release_code: e.target.value
         });
       }
     `;
-    if (!hasShits) {
-      impressionScript.innerHTML = `
-        document.getElementById('realease_code_selector').onchange = function (e){
-          chrome.runtime.sendMessage('${self.id}', {
-            release_code: e.target.value
-          });
+    if (hasShits) {
+      impressionScript.innerHTML += `
+        document.getElementById('arsCopyBtn').onclick = function(){
+          const theTableArea = document.getElementById('shit');
+          if (document.body.createTextRange) {
+            const range = document.body.createTextRange();
+            range.moveToElementText(theTableArea);
+            range.select();
+          } else if (window.getSelection) {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(theTableArea);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+          document.execCommand('Copy','false',null);
+          document.getElementById('arsCopyBtn').innerHTML = '复制成功！';
+          setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 888)
         }
       `;
     }
