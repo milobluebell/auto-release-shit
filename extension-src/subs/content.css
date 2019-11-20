@@ -3,7 +3,7 @@
   max-width: 500px;
   width: 100%;
   margin-left: 18px;
-  margin-top: 153px;
+  margin-top: 173px;
 }
 .shit table {
   min-width: 100%;
@@ -42,7 +42,11 @@
 .copy-btn {
   margin-top: 6px;
 }
-.reminder {
+.common-alert {
   margin-top: 6px;
   margin-left: 18px;
+}
+.release-code{
+  margin-bottom: 6px;
+  border-radius: 5px;
 }

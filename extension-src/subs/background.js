@@ -64,9 +64,6 @@ class Constants {
     default: ''
   }];
 }
-chrome.storage.sync.get(null, res => {
-  console.log(res);
-})
 
 class Vendors {
   /**
@@ -95,7 +92,6 @@ class Vendors {
    *        [其余根据实际情况进行拼接]
    */
   static generateOnePieceOfShit = (commits, params) => {
-    console.log(params);
     const commitList = commits.reduce((prev, curr) => {
       let splittedMessages = curr.message.split(':');
       let _key_ = '';

@@ -59,7 +59,6 @@ function getReleaseCommits(release_code) {
     }
   }, 500);
 }
-
 /**
  * 
  */
@@ -71,31 +70,49 @@ function insertElemNodes(shit, needReminder) {
     let impressionHtmlTemplate = ``;
     let impressionStyle = ``;
     let impressionScript = ``;
+    const marginTop = '153px';
+    const marginLeft = '18px';
     if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
-      impressionHtmlTemplate = `<div class="shit"><table cellspacing="6" id="shit" class="common-table"><tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
+      impressionHtmlTemplate = `<div class="shit">
+        <div class="release-code common-div">
+          构建编号：
+          <select id="realease_code_selector">`;
+      let i = 0;
+      while (i < 10) {
+        impressionHtmlTemplate += `
+          <option>#${getLastestReleaseCode() - i}</option>
+        `;
+        i++;
+      }
+      impressionHtmlTemplate += `
+          </select>
+        </div>
+      <table cellspacing="6" id="shit" class="common-table">
+      <tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
       shit.forEach(item => {
         const canEditable = ['发版时间', '测试对接人', '发版说明', '项目名称'];
         const permanents = ['项目组', '开发对接人', '测试对接人'];
         (permanents.includes(item.key) || item.value) ? impressionHtmlTemplate += `
           <tr class="shit-job" style="${item.key === '发版说明' ? 'position: relative' : ''}">
             <td class="key stage-cell">${item.key}： </td>
-            <td class="value stage-cell" id="${item.key}" contenteditable=${canEditable.includes(item.key) ? true : false}>${item.value === 'staging' ? 'Production' : item.value}${(item.key === '发版说明' && item.value.length >= 80) ? '<button title="格式化" class="toggle-mode" onclick="const desc = document.getElementById(\'发版说明\').childNodes[0].nodeValue;document.getElementById(\'发版说明\').innerHTML = \'<li>--  \' + desc.split(\'\、\').join(\'<li>--  \')"><img src="/static/44b87a8b/images/48x48/notepad.png"/></button>' : ``}</td>
+            <td class="value stage-cell" id="${item.key}" contenteditable=${canEditable.includes(item.key) ? true : false}>${item.value === 'staging' ? 'Production' : item.value}${(item.key === '发版说明' && item.value.length >= 80) ? '<button title="格式化" class="toggle-mode" onclick="const desc = document.getElementById(\'发版说明\').childNodes[0].nodeValue;document.getElementById(\'发版说明\').innerHTML = \'<li>--  \' + desc.split(\'\、\').join(\'<li>--  \')"><img src="/static/44b87a8b/images/48x48/notepad.png"/></button>' : ``}
+            </td>
           </tr>
         ` : ``;
       });
-      impressionHtmlTemplate += '</tbody></table>';
-      impressionHtml.innerHTML = impressionHtmlTemplate + '<button class="copy-btn common-btn" id="arsCopyBtn">复制</button></div>';
+      impressionHtmlTemplate += '</tbody></table><button class="copy-btn common-btn" id="arsCopyBtn">复制</button></div>';
+      impressionHtml.innerHTML = impressionHtmlTemplate;
     } else {
-      impressionHtml.innerHTML = `<div class="common-alert shit">⚠️没有找到最后一次构建的git commit messages</div>`;
+      impressionHtmlTemplate = `<div class="shit common-alert">⚠️没有找到最后一次构建的git commit messages</div>`;
+      impressionHtml.innerHTML = impressionHtmlTemplate;
     }
     // 加提示
     if (needReminder) {
-      impressionHtml.innerHTML += `<span class="common-alert reminder">⚠️建议在右上角Auto Release Sh*t插件"选项"中补全常用字段</span>`;
+      impressionHtml.innerHTML += `<span class="common-alert">⚠️建议在"选项"中补全常用字段 -- Auto Release Sh*t</span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#b3b3b3}</style>`;
     }
 
     impressionScript = document.createElement('script');
-    impressionScript.innerHTML = `document.getElementById('arsCopyBtn').onclick = copy;`;
-    impressionScript.innerHTML += `function copy(){
+    impressionScript.innerHTML = `document.getElementById('arsCopyBtn').onclick = function(){
         const theTableArea = document.getElementById('shit');
         if (document.body.createTextRange) {
           const range = document.body.createTextRange();
@@ -112,7 +129,14 @@ function insertElemNodes(shit, needReminder) {
         document.getElementById('arsCopyBtn').innerHTML = '复制成功！';
         setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 888)
       }
+      document.getElementById('realease_code_selector').onchange = function (e){
+        console.log(e.target.value);
+        chrome.runtime.sendMessage({}, function (res) {
+          console.log(res);
+        })
+      }
     `;
+
     //
     targetDiv.appendChild(impressionHtml);
     targetDiv.appendChild(impressionScript);
