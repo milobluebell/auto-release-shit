@@ -50,3 +50,6 @@
   margin-bottom: 6px;
   border-radius: 5px;
 }
+.release-code select{
+  width: 72px;
+}

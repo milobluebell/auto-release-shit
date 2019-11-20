@@ -1,6 +1,16 @@
 window.onload = function () {
   getReleaseCommits(getLastestReleaseCode());
+  chrome.extension.onRequest.addListener((response, sender, sendResponse) => {
+    if (response && response.theShit && Object.values(response.theShit).length > 0) {
+      cleanShit().then(res => {
+        if (res) {
+          insertElemNodes(response.theShit, response.needReminder, response.release_code);
+        }
+      });
+    }
+  });
 }
+let self;
 
 /**
  * @function 获取最近一次成功构建的编号
@@ -41,11 +51,11 @@ function getReleaseCommits(release_code) {
         env: getEnv(),
       }, function (res) {
         if (res && res.status) {
-          if (Object.keys(res.body).length > 0) {
+          if (res.body && Object.keys(res.body).length > 0) {
+            self = res.body.self;
             if (res.body.commits.length > 0 && res.body.theShit.length > 0) {
-              console.info('⬇️以下是最后一次构建的git commit messages：');
-              console.table(res.body.commits);
-              insertElemNodes(res.body.theShit, res.body.needReminder);
+              console.info(`${res.body.self.name} ${res.body.self.installType} ${res.body.self.version}`);
+              insertElemNodes(res.body.theShit, res.body.needReminder, release_code);
             }
             clearInterval($timer);
           }
@@ -59,28 +69,51 @@ function getReleaseCommits(release_code) {
     }
   }, 500);
 }
+
 /**
  * 
  */
-function insertElemNodes(shit, needReminder) {
+function cleanShit() {
+  return new Promise((resolve) => {
+    const jenkinsContainer = document.getElementsByClassName('cbwf-stage-view')[0];
+    let isWrapperClear = false, isScriptclear = false;
+    if (document.getElementById('arsScript')) {
+      jenkinsContainer.removeChild(document.getElementById('arsScript'));
+      isScriptclear = true;
+    }
+    if (document.getElementById('arsWrapper')) {
+      jenkinsContainer.removeChild(document.getElementById('arsWrapper'));
+      isWrapperClear = true;
+    }
+    resolve(isWrapperClear && isScriptclear);
+    return isWrapperClear && isScriptclear;
+  });
+}
+
+/**
+ * 
+ * @param {*} shit 
+ * @param {*} needReminder 
+ */
+function insertElemNodes(shit, needReminder, release_code) {
   try {
     const targetDiv = document.getElementsByClassName('cbwf-stage-view')[0];
     targetDiv.style.display = 'flex';
-    impressionHtml = document.createElement('div');
+    let impressionHtml = document.createElement('div');
+    impressionHtml.id = 'arsWrapper';
+    let impressionScript = document.createElement('script');
+    impressionScript.id = 'arsScript';
     let impressionHtmlTemplate = ``;
-    let impressionStyle = ``;
-    let impressionScript = ``;
-    const marginTop = '153px';
-    const marginLeft = '18px';
+    let hasShits = true;
     if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
       impressionHtmlTemplate = `<div class="shit">
         <div class="release-code common-div">
           构建编号：
           <select id="realease_code_selector">`;
       let i = 0;
-      while (i < 10) {
+      while (i < 11) {
         impressionHtmlTemplate += `
-          <option>#${getLastestReleaseCode() - i}</option>
+          <option value="${'#' + (getLastestReleaseCode() - i)}" ${parseInt(release_code) === (getLastestReleaseCode() - i) ? 'selected' : ''}>#${getLastestReleaseCode() - i}</option>
         `;
         i++;
       }
@@ -105,13 +138,13 @@ function insertElemNodes(shit, needReminder) {
     } else {
       impressionHtmlTemplate = `<div class="shit common-alert">⚠️没有找到最后一次构建的git commit messages</div>`;
       impressionHtml.innerHTML = impressionHtmlTemplate;
+      hasShits = false;
     }
     // 加提示
     if (needReminder) {
-      impressionHtml.innerHTML += `<span class="common-alert">⚠️建议在"选项"中补全常用字段 -- Auto Release Sh*t</span><style>.reminder{margin-left:${marginLeft};font-size:12px;color:#b3b3b3}</style>`;
+      impressionHtml.innerHTML += `<span class="common-alert">⚠️请在右上角插件的"选项"中补全常用字段 -- Auto Release Sh*t</span>`;
     }
 
-    impressionScript = document.createElement('script');
     impressionScript.innerHTML = `document.getElementById('arsCopyBtn').onclick = function(){
         const theTableArea = document.getElementById('shit');
         if (document.body.createTextRange) {
@@ -130,19 +163,26 @@ function insertElemNodes(shit, needReminder) {
         setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 888)
       }
       document.getElementById('realease_code_selector').onchange = function (e){
-        console.log(e.target.value);
-        chrome.runtime.sendMessage({}, function (res) {
-          console.log(res);
-        })
+        chrome.runtime.sendMessage('${self.id}', {
+          release_code: e.target.value
+        });
       }
     `;
-
+    if (!hasShits) {
+      impressionScript.innerHTML = `
+        document.getElementById('realease_code_selector').onchange = function (e){
+          chrome.runtime.sendMessage('${self.id}', {
+            release_code: e.target.value
+          });
+        }
+      `;
+    }
     //
     targetDiv.appendChild(impressionHtml);
     targetDiv.appendChild(impressionScript);
   }
   catch (err_msg) {
-    console.warn(err_msg);
+    console.error(err_msg);
   }
 }
 

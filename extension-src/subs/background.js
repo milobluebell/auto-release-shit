@@ -119,15 +119,14 @@ class Vendors {
     }, []);
     return sheet;
   }
-};
 
-let requestting = false;
-let commitsData = {};
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  sendResponse({ status: true, body: commitsData });
-  if (!requestting && request) {
+  /**
+   * @param {*} release_code
+   */
+  static getCommitsAndPrintAllThings = (release_code, withEcho = false) => {
+    const requestUrl = requestInfo.requestUrl.replace(/\/[1-9]+\//g, `/${release_code}/`);
     try {
-      fetch(request.requestUrl, { credentials: 'same-origin' }).then(res => {
+      fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
         if (res.ok && res.status === 200) {
           return res.json();
         }
@@ -139,14 +138,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
               commits: data[0].commits,
               theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
                 ...res,
-                ...request.env,
-                release_code: `#${request.release_code}`,
+                ...requestInfo.env,
+                release_code: `#${release_code}`,
               }),
               needReminder: (Object.values(res).every(item => item) && Object.values(res).length > 0) ? false : true,
+              self: theExtension,
+              release_code: release_code,
             }
             setTimeout(function () {
               commitsData = {};
-            }, 888)
+            }, 888);
+            if (withEcho) {
+              chrome.tabs.getSelected(null, function (tab) {
+                chrome.tabs.sendRequest(tab.id, commitsData);
+              });
+            }
           });
         }
         requestting = false;
@@ -155,6 +161,23 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       console.warn(error);
       requestting = true;
     }
+  }
+
+};
+
+/**
+ * start script
+ */
+var requestting = false, theExtension, requestInfo, commitsData;
+chrome.management.getSelf(res => theExtension = res);
+chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
+  Vendors.getCommitsAndPrintAllThings(request.release_code.split('#')[1], true);
+})
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  sendResponse({ status: true, body: commitsData, });
+  requestInfo = request;
+  if (!requestting && request) {
+    Vendors.getCommitsAndPrintAllThings(request.release_code);
   }
   requestting = true;
 }); 
