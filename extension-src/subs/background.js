@@ -20,7 +20,6 @@ class Constants {
     },
     'refactor': {
       label: `refactor`,
-      conse: `项目部分重构`
     },
     'perf': {
       label: `perf`,
@@ -32,7 +31,6 @@ class Constants {
     },
     'chore': {
       label: `chore`,
-      conse: `项目部分重构`
     }
   };
   static sheetFrags = [{
@@ -72,7 +70,7 @@ class Vendors {
    *       比如 fix(sku): 这种模式，也要被识别为fix
    */
   static getUnifiedCommitKey(fragmentBeforeColon) {
-    let gap = null;
+    let gap = undefined;
     Object.keys(Constants.commitMessageTags).forEach(item => {
       if (fragmentBeforeColon.includes(item)) {
         gap = item;
@@ -96,17 +94,21 @@ class Vendors {
       let splittedMessages = curr.message.split(':');
       let _key_ = '';
       if (splittedMessages.length === 1) {
-        // 说明没有:分割
         _key_ = curr.message.split(' ')[0];
       } else {
         _key_ = splittedMessages[0];
       }
       const commitKey = Vendors.getUnifiedCommitKey(_key_);
-      if (commitKey === Constants.commitMessageTags.feat.label) {
-        const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
-        return prev.concat([commitMsg]);
+      if (commitKey === undefined) {
+        // 没有匹配到angular标准指定的key
+        return prev.concat([curr.message]);
       } else {
-        return prev.concat([Constants.commitMessageTags[commitKey].conse]);
+        if (commitKey === Constants.commitMessageTags.feat.label || commitKey === Constants.commitMessageTags.refactor.label || commitKey === Constants.commitMessageTags.chore.label) {
+          const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
+          return prev.concat([commitMsg]);
+        } else {
+          return prev.concat([Constants.commitMessageTags[commitKey].conse]);
+        }
       }
     }, []);
     // 
