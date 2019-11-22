@@ -1,8 +1,8 @@
 
-class Constants {
-  static devTest = 'dev_test';
-  static staging = 'staging';
-  static commitMessageTags = {
+const Constants = {
+  devTest: 'dev_test',
+  staging: 'staging',
+  commitMessageTags: {
     'feat': {
       label: `feat`,
     },
@@ -32,8 +32,8 @@ class Constants {
     'chore': {
       label: `chore`,
     }
-  };
-  static sheetFrags = [{
+  },
+  sheetFrags: [{
     value: `group`,
     label: `项目组`,
   }, {
@@ -60,16 +60,16 @@ class Constants {
     value: `desc`,
     label: `发版说明`,
     default: ''
-  }];
+  }]
 }
 
-class Vendors {
+const Vendors = {
   /**
    * @param {*} fragmentBeforeColon
    * @desc 根据各种其它模式，生成统一可识别的commitKey
    *       比如 fix(sku): 这种模式，也要被识别为fix
    */
-  static getUnifiedCommitKey(fragmentBeforeColon) {
+  getUnifiedCommitKey: (fragmentBeforeColon) => {
     let gap = undefined;
     Object.keys(Constants.commitMessageTags).forEach(item => {
       if (fragmentBeforeColon.includes(item)) {
@@ -77,7 +77,7 @@ class Vendors {
       }
     });
     return gap;
-  }
+  },
 
   /**
    * @param {*} commits
@@ -89,7 +89,7 @@ class Vendors {
    *        [perf判定为"优化表现和性能"]
    *        [其余根据实际情况进行拼接]
    */
-  static generateOnePieceOfShit = (commits, params) => {
+  generateOnePieceOfShit: (commits, params) => {
     const commitList = commits.reduce((prev, curr) => {
       let splittedMessages = curr.message.split(':');
       let _key_ = '';
@@ -120,12 +120,12 @@ class Vendors {
       }]);
     }, []);
     return sheet;
-  }
+  },
 
   /**
    * @param {*} release_code
    */
-  static getCommitsAndPrintAllThings = (release_code, inEcho = false) => {
+  getCommitsAndPrintAllThings: (release_code, inEcho = false) => {
     const requestUrl = requestInfo.requestUrl.replace(/\/[1-9]+\//g, `/${release_code}/`);
     fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
       if (res.ok && res.status === 200) {
@@ -167,7 +167,7 @@ class Vendors {
       }
       requestting = false;
     });
-  }
+  },
 };
 
 /**
