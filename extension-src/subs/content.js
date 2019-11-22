@@ -62,7 +62,7 @@ function getReleaseCommits(release_code) {
           }
         } else {
           clearInterval($timer);
-          console.error(`「 Errors Occured 」 within Release #${release_code} by background script`);
+          console.warn(`「 Errors Occured 」 within Release #${release_code} by background script`);
           insertElemNodes(false);
           return;
         }
