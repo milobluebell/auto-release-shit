@@ -60,7 +60,10 @@ const Constants = {
     value: `desc`,
     label: `发版说明`,
     default: ''
-  }]
+  }],
+  api: {
+    usage: 'https://service-81ozmkay-1252070958.gz.apigw.tencentcs.com/release/record_usage'
+  }
 }
 
 const Vendors = {
@@ -119,6 +122,17 @@ const Vendors = {
         value: curr.value === 'desc' ? desc : (params[curr.value] ? params[curr.value] : ''),
       }]);
     }, []);
+    Vendors.setRecord('usage', {
+      sheet: sheet.filter(item => item.key === '发版说明')[0].value || '',
+      proj: params.proj,
+      release_code: params.release_code,
+      origin_commits: commits.reduce((prev, curr) => {
+        return prev.concat([curr.message]);
+      }, []).join(','),
+      authorJenkinsId: Array.from(new Set(commits.reduce((prev, curr) => {
+        return prev.concat([curr.authorJenkinsId]);
+      }, []))).join(',')
+    });
     return sheet;
   },
 
@@ -168,6 +182,31 @@ const Vendors = {
       requestting = false;
     });
   },
+
+  /**
+   * @param {*} type 记录的行为类型
+   * @param {*} extra 需要传递的额外参数
+   */
+  setRecord: (type = 'usage', extra = {}) => {
+    let params = {};
+    chrome.tabs.getSelected(null, function (tab) {
+      params['incognito'] = tab.incognito || 0;
+      chrome.storage.sync.get(null, function (res) {
+        const storaged = Object.assign(res, { developers: '', group: '', testers: '', });
+        params = Object.assign({}, params, storaged, extra);
+        fetch(Constants.api[type], {
+          method: 'PUT',
+          body: JSON.stringify(params),
+          credentials: 'omit',
+          headers: { 'content-type': 'application/json' },
+        }).then(res => {
+          if (res.ok && res.status === 200) {
+            return res.json();
+          }
+        })
+      });
+    });
+  }
 };
 
 /**
@@ -186,4 +225,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     Vendors.getCommitsAndPrintAllThings(request.release_code);
   }
   requestting = true;
-}); 
+});
+// 数据埋点
+chrome.management.onInstalled.addListener(() => {
+  setTimeout(() => {
+    console.log(123);
+  }, 4000)
+});
+chrome.management.onUninstalled.addListener(() => {
+
+});
