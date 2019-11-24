@@ -18,12 +18,16 @@
 
 ## 💩 使用 - Usage
 
-1. 安装完成后，点击浏览器右上角的图标，选择“选项”，配置你的常用参数。如图所示：
-![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/WX20191029-151103%402x.png)
+1. 安装完成后，点击浏览器右上角的图标，选择“选项”
+![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/2.jpg)
 
 
-2. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages **（只识别按照Angular Commit规范的提交）** 。效果如图：
-![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/WX20191029-152849%402x.jpg)
+2. 配置你的常用参数。如图所示：
+![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/QQ20191124-193409%402x.png)
+
+
+3. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages **（只识别按照Angular Commit规范的提交）** 。效果如图：
+![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/3.jpg)
 
 
 
