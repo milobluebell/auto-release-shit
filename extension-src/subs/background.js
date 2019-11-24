@@ -204,6 +204,7 @@ const Vendors = {
       params['type'] = theExtension.installType;
       params['ext_id'] = theExtension.id;
       params['version'] = theExtension.version;
+      params['ua'] = navigator.userAgent;
       chrome.storage.sync.get(null, function (res) {
         const storaged = Object.assign(res, { developers: '', group: '', testers: '', });
         params = Object.assign({}, params, storaged, extra);
