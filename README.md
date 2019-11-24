@@ -11,7 +11,9 @@
 
 
 ## 🚽 安装 - Installation
-- 使用google chrome应用商店下载本扩展：**[「Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
+- 在**Google Chrome**下安装本扩展，请到：**[「Chrome - Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
+
+- 在**Firefox**下载安装扩展，请到：**[「Firefox :: Auto Release Sh*t」](https://addons.mozilla.org/zh-CN/firefox/addon/auto-release-sh-t/)**。
   
 - 或者下载本项目最新 [Auto_Release_Sh*t.zip](https://github.com/milobluebell/auto-release-shit/releases)，并将其直接拖拽到，开启了"开发者模式"的 [chrome扩展程序管理页](https://github.com/milobluebell/auto-release-shit/releases) 进行安装。
   
