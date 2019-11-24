@@ -1,6 +1,6 @@
 window.onload = function () {
   getReleaseCommits(getLastestReleaseCode());
-  chrome.extension.onMessage.addListener((response) => {
+  chrome.runtime.onMessage.addListener((response) => {
     cleanShit().then(res => {
       if (res) {
         if (response && response.theShit && Object.values(response.theShit).length > 0) {
