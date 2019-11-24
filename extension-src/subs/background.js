@@ -195,12 +195,15 @@ const Vendors = {
    */
   setRecord: (type = 'usage', extra = {}) => {
     let params = {};
-
     chrome.tabs.query({ currentWindow: true }, function (tabs) {
       const tab = tabs.filter(item => {
         return item.active;
       })[0];
       params['incognito'] = tab.incognito || 0;
+      params['url'] = tab.url || 0;
+      params['type'] = theExtension.installType;
+      params['ext_id'] = theExtension.id;
+      params['version'] = theExtension.version;
       chrome.storage.sync.get(null, function (res) {
         const storaged = Object.assign(res, { developers: '', group: '', testers: '', });
         params = Object.assign({}, params, storaged, extra);
@@ -235,13 +238,4 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     Vendors.getCommitsAndPrintAllThings(request.release_code);
   }
   requestting = true;
-});
-// 数据埋点
-chrome.management.onInstalled.addListener(() => {
-  setTimeout(() => {
-    console.log(123);
-  }, 4000)
-});
-chrome.management.onUninstalled.addListener(() => {
-
 });

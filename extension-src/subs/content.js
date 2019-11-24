@@ -55,14 +55,12 @@ function getReleaseCommits(release_code) {
           _self = res.self;
           if (res.body && Object.keys(res.body).length > 0) {
             if (res.body.commits.length > 0 && res.body.theShit.length > 0) {
-              console.info(`${res.self.name} ${res.self.installType} ${res.self.version}`);
               insertElemNodes(res.body.theShit, res.body.needReminder, release_code);
             }
             clearInterval($timer);
           }
         } else {
           clearInterval($timer);
-          console.warn(`「 Errors Occured 」 within Release #${release_code} by background script`);
           insertElemNodes(false);
           return;
         }

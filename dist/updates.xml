@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
-  <app appid='dklkaamofihefjbaiobfnnbpngoendch'>
-    <updatecheck codebase='https://github.com/milobluebell/auto-release-shit/blob/master/dist/Auto_Release_Shit.crx?raw=true' version='1.1.4' />
+  <app appid='fehmhdjfjmdpmbjjndjmcdhfibnpnkbd'>
+    <updatecheck codebase='https://github.com/milobluebell/auto-release-shit/blob/master/dist/Auto_Release_Shit.crx?raw=true' version='1.1.5' />
   </app>
 </gupdate>
