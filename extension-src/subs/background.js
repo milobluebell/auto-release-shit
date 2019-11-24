@@ -145,8 +145,11 @@ const Vendors = {
       if (res.ok && res.status === 200) {
         return res.json();
       } else {
-        chrome.tabs.getSelected(null, function (tab) {
-          chrome.tabs.sendRequest(tab.id, Object.assign({
+        chrome.tabs.query({ currentWindow: true }, function (tabs) {
+          const currTab = tabs.filter(item => {
+            return item.active;
+          })[0];
+          chrome.tabs.sendMessage(currTab.id, Object.assign({
             release_code: release_code
           }, commitsData));
         });
@@ -171,8 +174,11 @@ const Vendors = {
             commitsData = {};
           }, 888);
           if (inEcho) {
-            chrome.tabs.getSelected(null, function (tab) {
-              chrome.tabs.sendRequest(tab.id, Object.assign({
+            chrome.tabs.query({ currentWindow: true }, function (tabs) {
+              const currTab = tabs.filter(item => {
+                return item.active;
+              })[0];
+              chrome.tabs.sendMessage(currTab.id, Object.assign({
                 release_code: release_code
               }, commitsData));
             });
@@ -189,7 +195,11 @@ const Vendors = {
    */
   setRecord: (type = 'usage', extra = {}) => {
     let params = {};
-    chrome.tabs.getSelected(null, function (tab) {
+
+    chrome.tabs.query({ currentWindow: true }, function (tabs) {
+      const tab = tabs.filter(item => {
+        return item.active;
+      })[0];
       params['incognito'] = tab.incognito || 0;
       chrome.storage.sync.get(null, function (res) {
         const storaged = Object.assign(res, { developers: '', group: '', testers: '', });

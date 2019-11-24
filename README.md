@@ -26,7 +26,7 @@
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/QQ20191124-193409%402x.png)
 
 
-3. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages **（只识别按照Angular Commit规范的提交）** 。效果如图：
+1. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages。效果如图：
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/3.jpg)
 
 

@@ -1,6 +1,6 @@
 window.onload = function () {
   getReleaseCommits(getLastestReleaseCode());
-  chrome.extension.onRequest.addListener((response) => {
+  chrome.extension.onMessage.addListener((response) => {
     cleanShit().then(res => {
       if (res) {
         if (response && response.theShit && Object.values(response.theShit).length > 0) {
@@ -112,7 +112,7 @@ function insertElemNodes(shit, needReminder, release_code) {
           ${shit ? '' : '选择'}构建编号：
           <select id="realease_code_selector">`;
     let i = 0;
-    while (i < 15 && (getLastestReleaseCode() - i > 0)) {
+    while (i < 11 && (getLastestReleaseCode() - i > 0)) {
       impressionHtmlTemplate += `
           <option value="${'#' + (getLastestReleaseCode() - i)}" ${parseInt(release_code) === (getLastestReleaseCode() - i) ? 'selected' : ''}>
             #${getLastestReleaseCode() - i}
