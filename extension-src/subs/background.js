@@ -140,7 +140,8 @@ const Vendors = {
    * @param {*} release_code
    */
   getCommitsAndPrintAllThings: (release_code, inEcho = false) => {
-    const requestUrl = requestInfo.requestUrl.replace(/\/[1-9]+\//g, `/${release_code}/`);
+    console.log(release_code);
+    const requestUrl = requestInfo.requestUrl.replace(/\/[0-9]+\//g, `/${release_code}/`);
     fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
       if (res.ok && res.status === 200) {
         return res.json();
