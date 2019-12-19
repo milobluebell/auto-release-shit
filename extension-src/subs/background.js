@@ -163,9 +163,10 @@ const Vendors = {
           return curr.includes('arsFix=') ? prev.concat([curr.split('arsFix=')[1]]) : prev.concat([]);
         }, []).join('以及');
         str += '等缺陷的修复';
-        item.value = str + '、' + valueArr.reduce((prev, curr) => {
+        const notFixValue = valueArr.reduce((prev, curr) => {
           return !curr.includes('arsFix=') ? prev.concat([curr]) : prev.concat([]);
         }, []).join('、');
+        item.value = str + (notFixValue ? `、${notFixValue}` : '');
       }
     });
     return shits;
