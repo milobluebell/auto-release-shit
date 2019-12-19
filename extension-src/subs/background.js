@@ -129,7 +129,7 @@ const Vendors = {
      * @function 
      */
     const shrinkFixCommits = () => {
-      const rgExg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "g");
+      var rgExg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "g");
 
     },
 
