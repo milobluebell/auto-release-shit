@@ -7,12 +7,12 @@
 
 ### 目录主要结构说明：
 ```
--- .github
-  -- workflow
-    -- nodejs.yml  // github action配置
--- extension-src   // 开发src
--- dist            // 打包构建目录
--- gulpfile.js     // gulp任务脚本
+-- .github/
+  -- workflow/
+    -- nodejs.yml    // github action配置
+-- extension-src/    // 开发src
+-- dist/             // 打包构建目录
+-- gulpfile.js       // gulp任务脚本
 ```
 
 ### 工作流 workflow：
@@ -28,11 +28,12 @@ npm install
 -- extension-src
     -- manifest.json // 和version字段，作为「产品迭代版本号」
 ```
+
 4、打包执行
 ```
 gulp build
 ```
-在build之后，不仅会将打包后的crx放在dist中。**还会为manifest.json写入update_url配置项，因此会产生修改manifest.json的副作用。需要在构建完成后，视情况revert这个文件**
+在build之后，不仅会将打包后的crx放在dist中。**还会因为给manifest.json写入update_url配置项，而产生修改manifest.json的副作用。需要在构建完成后revert这个文件**
 
 5、git提交和打tag
 ```

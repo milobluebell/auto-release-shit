@@ -1,4 +1,5 @@
 
+const publishedJoinedByCommitsFlags = ['feat', 'refactor', 'chore'];
 const Constants = {
   devTest: 'dev_test',
   staging: 'staging',
@@ -106,14 +107,32 @@ const Vendors = {
         // 没有匹配到angular标准指定的key
         return prev.concat([curr.message]);
       } else {
-        if (commitKey === Constants.commitMessageTags.feat.label || commitKey === Constants.commitMessageTags.refactor.label || commitKey === Constants.commitMessageTags.chore.label) {
+        const joinRangeNumber = 3;
+        let prefixStr = '';
+        if (publishedJoinedByCommitsFlags.filter(item => item === commitKey).length > 0) {
+          // 支持feat: xxx之外，再支持feat xxx这种变态格式
           const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
           return prev.concat([commitMsg]);
         } else {
-          return prev.concat([Constants.commitMessageTags[commitKey].conse]);
+          if (commitKey === 'fix') {
+            const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
+            return prev.concat([`[fix_msg_start]${commitMsg}[fix_msg_end]`]);
+          } else {
+            // 
+            return prev.concat([Constants.commitMessageTags[commitKey].conse]);
+          }
         }
       }
     }, []);
+
+    /**
+     * @function 
+     */
+    const shrinkFixCommits = () => {
+      const rgExg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "g");
+
+    },
+
     // 
     const desc = Array.from(new Set(commitList), commit => commit).join('、');
     const sheet = Constants.sheetFrags.reduce((prev, curr) => {
@@ -140,7 +159,6 @@ const Vendors = {
    * @param {*} release_code
    */
   getCommitsAndPrintAllThings: (release_code, inEcho = false) => {
-    console.log(release_code);
     const requestUrl = requestInfo.requestUrl.replace(/\/[0-9]+\//g, `/${release_code}/`);
     fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
       if (res.ok && res.status === 200) {
@@ -200,6 +218,7 @@ const Vendors = {
       const tab = tabs.filter(item => {
         return item.active;
       })[0];
+      console.log(tab);
       params['incognito'] = tab.incognito || 0;
       params['url'] = tab.url || 0;
       params['type'] = theExtension.installType;
@@ -207,7 +226,7 @@ const Vendors = {
       params['version'] = theExtension.version;
       params['ua'] = navigator.userAgent;
       chrome.storage.sync.get(null, function (res) {
-        const storaged = Object.assign(res, { developers: '', group: '', testers: '', });
+        const storaged = Object.assign({ developers: '', group: '', testers: '' }, res);
         params = Object.assign({}, params, storaged, extra);
         fetch(Constants.api[type], {
           method: 'PUT',

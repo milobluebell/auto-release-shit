@@ -42,7 +42,7 @@ function getReleaseCommits(release_code) {
   const requestUrl = `${baseUrl}${release_code}/wfapi/changesets?_=${tnow}`.toString();
   const $timer = setInterval(() => {
     range++;
-    if (range >= 15) {
+    if (range >= 16) {
       insertElemNodes(false);
       clearInterval($timer)
     } else {
@@ -66,7 +66,7 @@ function getReleaseCommits(release_code) {
         }
       });
     }
-  }, 300);
+  }, 500);
 }
 
 /**
