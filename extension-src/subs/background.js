@@ -94,6 +94,8 @@ const Vendors = {
    *        [其余根据实际情况进行拼接]
    */
   generateOnePieceOfShit: (commits, params) => {
+    const joinRangeNumber = 3;
+    let round = 0;
     const commitList = commits.reduce((prev, curr) => {
       let splittedMessages = curr.message.split(':');
       let _key_ = '';
@@ -107,8 +109,6 @@ const Vendors = {
         // 没有匹配到angular标准指定的key
         return prev.concat([curr.message]);
       } else {
-        const joinRangeNumber = 3;
-        let prefixStr = '';
         if (publishedJoinedByCommitsFlags.filter(item => item === commitKey).length > 0) {
           // 支持feat: xxx之外，再支持feat xxx这种变态格式
           const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
@@ -116,7 +116,8 @@ const Vendors = {
         } else {
           if (commitKey === 'fix') {
             const commitMsg = curr.message.substring(curr.message.indexOf(':') > -1 ? (curr.message.indexOf(':') + 2) : (curr.message.indexOf(' ') + 1));
-            return prev.concat([`[fix_msg_start]${commitMsg}[fix_msg_end]`]);
+            round++;
+            return round < joinRangeNumber ? prev.concat([`arsFix=${commitMsg}`]) : prev.concat([]);
           } else {
             // 
             return prev.concat([Constants.commitMessageTags[commitKey].conse]);
@@ -124,14 +125,6 @@ const Vendors = {
         }
       }
     }, []);
-
-    /**
-     * @function 
-     */
-    const shrinkFixCommits = () => {
-      var rgExg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "g");
-
-    },
 
     // 
     const desc = Array.from(new Set(commitList), commit => commit).join('、');
@@ -153,6 +146,29 @@ const Vendors = {
       }, []))).join(',')
     });
     return sheet;
+  },
+
+
+  /**
+   * @function 根据commits，自动组合出fix对应的内容
+   * @param {*} shits
+   */
+  shrinkFixCommits: (shits) => {
+    shits.forEach(item => {
+      if (item.key === '发版说明') {
+        // 
+        let str = `做了`;
+        let valueArr = item.value.split('、');
+        str += valueArr.reduce((prev, curr) => {
+          return curr.includes('arsFix=') ? prev.concat([curr.split('arsFix=')[1]]) : prev.concat([]);
+        }, []).join('以及');
+        str += '等缺陷的修复';
+        item.value = str + '、' + valueArr.reduce((prev, curr) => {
+          return !curr.includes('arsFix=') ? prev.concat([curr]) : prev.concat([]);
+        }, []).join('、');
+      }
+    });
+    return shits;
   },
 
   /**
@@ -180,11 +196,11 @@ const Vendors = {
             commitsData = {
               commitCount: data[0].commitCount,
               commits: data[0].commits,
-              theShit: Vendors.generateOnePieceOfShit(data[0].commits, {
+              theShit: Vendors.shrinkFixCommits(Vendors.generateOnePieceOfShit(data[0].commits, {
                 ...res,
                 ...requestInfo.env,
                 release_code: `#${release_code}`,
-              }),
+              })),
               needReminder: (Object.values(res).every(item => item) && Object.values(res).length > 0) ? false : true,
               release_code: release_code,
             }
@@ -218,7 +234,6 @@ const Vendors = {
       const tab = tabs.filter(item => {
         return item.active;
       })[0];
-      console.log(tab);
       params['incognito'] = tab.incognito || 0;
       params['url'] = tab.url || 0;
       params['type'] = theExtension.installType;

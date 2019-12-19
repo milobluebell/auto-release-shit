@@ -199,9 +199,9 @@ function getEnv() {
  */
 function getStage() {
   const baseUrl = window.location.href.toLowerCase();
-  if (baseUrl.includes('prod') || baseUrl.includes('production')) return 'prod';
-  else if (baseUrl.includes('staging')) return 'staging';
-  else return 'dev';
+  if (baseUrl.includes('prod') || baseUrl.includes('Production')) return 'prod';
+  else if (baseUrl.includes('staging')) return 'Staging';
+  else return 'Dev';
 }
 
 /**
