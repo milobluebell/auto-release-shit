@@ -153,9 +153,9 @@ const Vendors = {
    * @function 根据commits，自动组合出fix对应的内容
    * @param {*} shits
    */
-  shrinkFixCommits: (shits) => {
+  expandFixCommits: (shits) => {
     shits.forEach(item => {
-      if (item.key === '发版说明') {
+      if (item.key === '发版说明' && item.value.includes('arsFix=')) {
         // 
         let str = `做了`;
         let valueArr = item.value.split('、');
@@ -197,7 +197,7 @@ const Vendors = {
             commitsData = {
               commitCount: data[0].commitCount,
               commits: data[0].commits,
-              theShit: Vendors.shrinkFixCommits(Vendors.generateOnePieceOfShit(data[0].commits, {
+              theShit: Vendors.expandFixCommits(Vendors.generateOnePieceOfShit(data[0].commits, {
                 ...res,
                 ...requestInfo.env,
                 release_code: `#${release_code}`,

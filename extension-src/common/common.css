@@ -83,3 +83,10 @@
 .common-ipt:focus {
   border: solid 2px #92bbb4;
 }
+.common-div .copyright {
+  font-size: 12px;
+  float: right;
+  color: rgb(157, 186, 191);
+  text-shadow: #fcfcfc 1px 1px 1px;
+  cursor: default;
+}

@@ -11,16 +11,16 @@
 
 
 ## 🚽 安装 - Installation
-- 在**Google Chrome**下安装本扩展，请到：**[「Chrome - Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
+- **(推荐方式*)** 在Google Chrome下安装本扩展，请移步至：**[「Chrome - Auto Release Sh*t」](https://chrome.google.com/webstore/detail/auto-release-sht/dlkiheickdjonefdhmdbgilomcigjolj?hl=zh-CN)**。
 
 <!-- - 在**Firefox**下载安装扩展，请到：**[「Firefox :: Auto Release Sh*t」](https://addons.mozilla.org/zh-CN/firefox/addon/auto-release-sh-t/)**。 -->
   
-- 或者下载本项目最新 [Auto_Release_Sh*t.zip](https://github.com/milobluebell/auto-release-shit/releases)，并将其直接拖拽到，开启了"开发者模式"的 [chrome扩展程序管理页](chrome://extensions/) 进行安装。
+- 或者下载本项目最新 [Auto_Release_Sh*t.zip](https://github.com/milobluebell/auto-release-shit/releases)，并将其直接拖拽到，开启了"开发者模式"的进行安装。
   
 
 ## 💩 使用 - Usage
 
-1. 安装完成后，点击浏览器右上角的图标，选择“选项”
+1. 安装完成后，点击浏览器右上角的图标，选择“选项”。
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/2.jpg)
 
 
@@ -28,7 +28,7 @@
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/QQ20191124-193409%402x.png)
 
 
-1. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，本扩展均会自动识别**最后一次构建**历史的git commit messages。效果如图：
+1. 访问任何匹配 \*://jenkins.codemao.cn/\* 的域名，即可生效。效果如图：
 ![Image text](https://raw.githubusercontent.com/milobluebell/imgs-repo/master/3.jpg)
 
 

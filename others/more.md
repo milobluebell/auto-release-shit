@@ -5,17 +5,14 @@
 
 ## 开发文档
 
-### 目录主要结构说明：
+### 主要结构：
 ```
--- .github/
-  -- workflow/
-    -- nodejs.yml    // github action配置
 -- extension-src/    // 开发src
 -- dist/             // 打包构建目录
 -- gulpfile.js       // gulp任务脚本
 ```
 
-### 工作流 workflow：
+### 工作流：
 1、安装gulp等所需开发环境依赖。
 ```
 npm install
