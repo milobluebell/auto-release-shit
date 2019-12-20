@@ -120,7 +120,7 @@ function insertElemNodes(shit, needReminder, release_code) {
     }
     impressionHtmlTemplate += `</select>`;
     if (Object.prototype.toString.call(shit).toLowerCase() === '[object array]' && shit.length > 0) {
-      impressionHtmlTemplate += `</div>
+      impressionHtmlTemplate += `<span class="copyright">Auto Release Sheet</span></div>
       <table cellspacing="6" id="shit" class="common-table">
       <tbody class="tobsTable-body"><thead><tr><td colspan="2">【发版申请】</td></tr></thead>`;
       shit.forEach(item => {
@@ -168,7 +168,7 @@ function insertElemNodes(shit, needReminder, release_code) {
           }
           document.execCommand('Copy','false',null);
           document.getElementById('arsCopyBtn').innerHTML = '复制成功！';
-          setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 888)
+          setTimeout(()=>{document.getElementById('arsCopyBtn').innerHTML = '复制'}, 1288)
         }
       `;
     }

@@ -88,7 +88,7 @@ document.getElementById('submitBtn').onclick = function () {
     theToast.style.display = 'block';
     setTimeout(() => {
       theToast.style.display = 'none';
-    }, 888);
+    }, 1288);
   });
 }
 bindEvent();

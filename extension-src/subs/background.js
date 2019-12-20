@@ -134,6 +134,7 @@ const Vendors = {
         value: curr.value === 'desc' ? desc : (params[curr.value] ? params[curr.value] : ''),
       }]);
     }, []);
+    console.log(2);
     Vendors.setRecord('usage', {
       sheet: sheet.filter(item => item.key === '发版说明')[0].value || '',
       proj: params.proj,
@@ -177,6 +178,7 @@ const Vendors = {
    */
   getCommitsAndPrintAllThings: (release_code, inEcho = false) => {
     const requestUrl = requestInfo.requestUrl.replace(/\/[0-9]+\//g, `/${release_code}/`);
+    requestting = true;
     fetch(requestUrl, { credentials: 'same-origin' }).then(res => {
       if (res.ok && res.status === 200) {
         return res.json();
@@ -193,6 +195,7 @@ const Vendors = {
     }).then(data => {
       if (data) {
         chrome.storage.sync.get(null, function (res) {
+          console.log(3);
           if (data.length > 0) {
             commitsData = {
               commitCount: data[0].commitCount,
@@ -208,7 +211,7 @@ const Vendors = {
           }
           setTimeout(function () {
             commitsData = {};
-          }, 888);
+          }, 1288);
           if (inEcho) {
             chrome.tabs.query({ currentWindow: true }, function (tabs) {
               const currTab = tabs.filter(item => {
@@ -232,29 +235,35 @@ const Vendors = {
   setRecord: (type = 'usage', extra = {}) => {
     let params = {};
     chrome.tabs.query({ currentWindow: true }, function (tabs) {
-      const tab = tabs.filter(item => {
-        return item.active;
-      })[0];
-      params['incognito'] = tab.incognito || 0;
-      params['url'] = tab.url || 0;
+      console.log(1);
+      if (tabs && tabs.length > 0) {
+        const tab = tabs.filter(item => {
+          return item.active;
+        })[0];
+        params['incognito'] = tab.incognito || 0;
+        params['url'] = tab.url || '';
+      } else {
+        params['incognito'] = 0;
+        params['url'] = '';
+      }
       params['type'] = theExtension.installType;
       params['ext_id'] = theExtension.id;
       params['version'] = theExtension.version;
       params['ua'] = navigator.userAgent;
-      chrome.storage.sync.get(null, function (res) {
-        const storaged = Object.assign({ developers: '', group: '', testers: '' }, res);
-        params = Object.assign({}, params, storaged, extra);
-        fetch(Constants.api[type], {
-          method: 'PUT',
-          body: JSON.stringify(params),
-          credentials: 'omit',
-          headers: { 'content-type': 'application/json' },
-        }).then(res => {
-          if (res.ok && res.status === 200) {
-            return res.json();
-          }
-        })
-      });
+    });
+    chrome.storage.sync.get(null, function (res) {
+      const storaged = Object.assign({ developers: '', group: '', testers: '' }, res);
+      params = Object.assign({}, params, storaged, extra);
+      fetch(Constants.api[type], {
+        method: 'PUT',
+        body: JSON.stringify(params),
+        credentials: 'omit',
+        headers: { 'content-type': 'application/json' },
+      }).then(res => {
+        if (res.ok && res.status === 200) {
+          return res.json();
+        }
+      })
     });
   }
 };
@@ -262,7 +271,8 @@ const Vendors = {
 /**
  * start script
  */
-var requestting = false, theExtension, requestInfo, commitsData;
+var requestting = false;
+var theExtension, requestInfo, commitsData;
 chrome.management.getSelf(res => theExtension = res);
 chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResponse) {
   Vendors.getCommitsAndPrintAllThings(request.release_code.split('#')[1], true)
@@ -271,7 +281,9 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData, self: theExtension });
   requestInfo = request;
+  console.log(requestting, request);
   if (!requestting && request) {
+    console.log(4);
     Vendors.getCommitsAndPrintAllThings(request.release_code);
   }
   requestting = true;

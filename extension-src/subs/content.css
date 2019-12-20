@@ -7,6 +7,7 @@
   width: 100%;
   margin-top: 173px;
   border-radius: 5px;
+  cursor: default;
 }
 .shit.n-shit {
   margin-top: 173px;
@@ -19,6 +20,7 @@
 }
 .shit-job .stage-cell[contenteditable="true"]:hover {
   background-color: rgba(0, 0, 0, 0.1);
+  cursor: auto;
   border-radius: 5px;
 }
 .shit li {
@@ -39,16 +41,16 @@
 }
 .shit .key {
   font-size: 13px;
-  min-width: 100px;
+  min-width: 90px;
 }
 .shit .value {
   font-size: 14px;
   font-weight: 600;
-  padding-left: 5px;
+  padding-left: 6px;
 }
 .shit tr:nth-of-type(3) td:nth-of-type(2) {
   background-color: rgb(146, 187, 180);
-  /* background: rgba(0, 0, 0, 0.07); */
+  border-radius: 5px;
 }
 .copy-btn {
   margin-top: 6px;
@@ -61,6 +63,6 @@
   border-radius: 5px;
 }
 .release-code select {
-  width: 72px;
+  width: 88px;
   cursor: pointer;
 }

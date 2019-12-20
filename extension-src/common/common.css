@@ -1,9 +1,7 @@
-
 *[class^="common-"] {
   border-radius: 5px;
   font-size: 13px;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, Helvetica Neue,
-    PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   text-rendering: optimizeLegibility;
 }
 .common-alert {
@@ -41,11 +39,11 @@
 .common-table tr {
   border-bottom: solid 1px black;
 }
-.common-div{
+.common-div {
   color: #224947;
   background-color: #d5e5e2;
   border: solid 2px #92bbb4;
-  padding: 6px;
+  padding: 8px 10px;
   box-sizing: border-box;
 }
 .common-btn {
@@ -54,12 +52,12 @@
   width: 100%;
   outline: none;
   cursor: pointer;
-  font-weight: bold;
-  padding: 4px 0;
+  font-weight: 500;
+  padding: 5px 0;
   border-radius: 5px;
   border-color: #92bbb4;
-  border-width: 1px 1px 2px 1px;
-  transition: background-color 0.1s ease-in-out;
+  border-width: 1px 1px 3px 1px;
+  transition: background-color 0.08s ease-in-out;
 }
 .common-btn:hover {
   background-color: #8ab4ac;
@@ -86,7 +84,6 @@
 .common-div .copyright {
   font-size: 12px;
   float: right;
-  color: rgb(157, 186, 191);
-  text-shadow: #fcfcfc 1px 1px 1px;
-  cursor: default;
+  color: rgb(34, 73, 71, 0.4);
+  text-shadow: #fcfcfc 2px 1px 1px;
 }
