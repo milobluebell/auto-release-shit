@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Auto Release Sh*t",
   "description": "自动生成发版申请",
-  "version": "1.1.6",
+  "version": "1.1.61",
   "permissions": [
     "management",
     "webRequest",
