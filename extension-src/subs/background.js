@@ -134,7 +134,6 @@ const Vendors = {
         value: curr.value === 'desc' ? desc : (params[curr.value] ? params[curr.value] : ''),
       }]);
     }, []);
-    console.log(2);
     Vendors.setRecord('usage', {
       sheet: sheet.filter(item => item.key === '发版说明')[0].value || '',
       proj: params.proj,
@@ -195,7 +194,6 @@ const Vendors = {
     }).then(data => {
       if (data) {
         chrome.storage.sync.get(null, function (res) {
-          console.log(3);
           if (data.length > 0) {
             commitsData = {
               commitCount: data[0].commitCount,
@@ -235,7 +233,6 @@ const Vendors = {
   setRecord: (type = 'usage', extra = {}) => {
     let params = {};
     chrome.tabs.query({ currentWindow: true }, function (tabs) {
-      console.log(1);
       if (tabs && tabs.length > 0) {
         const tab = tabs.filter(item => {
           return item.active;
@@ -281,9 +278,7 @@ chrome.runtime.onMessageExternal.addListener(function (request, sender, sendResp
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   sendResponse({ status: true, body: commitsData, self: theExtension });
   requestInfo = request;
-  console.log(requestting, request);
   if (!requestting && request) {
-    console.log(4);
     Vendors.getCommitsAndPrintAllThings(request.release_code);
   }
   requestting = true;
