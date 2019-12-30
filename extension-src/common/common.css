@@ -84,6 +84,6 @@
 .common-div .copyright {
   font-size: 12px;
   float: right;
-  color: rgb(34, 73, 71, 0.4);
-  text-shadow: #fcfcfc 2px 1px 1px;
+  color: rgba(80, 138, 135, 0.4);
+  text-shadow: #fcfcfc 1px 1px 1px;
 }
