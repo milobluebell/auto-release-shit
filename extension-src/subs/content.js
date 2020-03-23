@@ -22,15 +22,15 @@ function getLastestReleaseCode() {
   let lastestSuccessReleaseCode = 0;
   for (let i = 0; i < lastestSuccessReleases.length; i++) {
     const releaseInner = lastestSuccessReleases[i].innerHTML.toLowerCase();
-    if (releaseInner.includes('最近一次构建')) {
-      lastestSuccessReleaseCode = releaseInner.match(/\d+/g)[0];
+    if (releaseInner.includes('最近一次构建') || releaseInner.includes('last build ')) {
+      lastestSuccessReleaseCode = releaseInner.match(/[0-9]+/g)[0];
     }
   }
   return lastestSuccessReleaseCode;
 }
 
 /**
- * @function 获取对应构架编号的commit内容
+ * @function 获取对应构建编号的commit内容
  */
 function getReleaseCommits(release_code) {
   if (typeof release_code !== 'string' || release_code === 0) {
